@@ -25,6 +25,14 @@ const MapAnimation = () => {
       })
     );
 
+    const graticuleSeries = chart.series.push(
+      am5map.GraticuleSeries.new(root, {})
+    );
+    graticuleSeries.mapLines.template.setAll({
+      stroke: root.interfaceColors.get('alternativeBackground'),
+      strokeOpacity: 0.08,
+    });
+
     var cont = chart.children.push(
       am5.Container.new(root, {
         layout: root.horizontalLayout,
@@ -56,12 +64,9 @@ const MapAnimation = () => {
         chart.set('projection', am5map.geoMercator());
         chart.set('panY', 'translateY');
         chart.set('rotationY', 0);
-        backgroundSeries.mapPolygons.template.set('fillOpacity', 0);
       } else {
         chart.set('projection', am5map.geoOrthographic());
         chart.set('panY', 'rotateY');
-
-        backgroundSeries.mapPolygons.template.set('fillOpacity', 0.1);
       }
     });
 
@@ -74,13 +79,16 @@ const MapAnimation = () => {
 
     // Create series for background fill
     // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/#Background_polygon
-    var backgroundSeries = chart.series.push(
+    //Set the map water color
+    const backgroundSeries = chart.series.unshift(
       am5map.MapPolygonSeries.new(root, {})
     );
     backgroundSeries.mapPolygons.template.setAll({
-      fill: root.interfaceColors.get('alternativeBackground'),
-      fillOpacity: 0,
-      strokeOpacity: 0,
+      fill: am5.color(0xedf7fa),
+      stroke: am5.color(0xedf7fa),
+    });
+    backgroundSeries.data.push({
+      geometry: am5map.getGeoRectangle(90, 180, -90, -180),
     });
 
     // Add background polygon
