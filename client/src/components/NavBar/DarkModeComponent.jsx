@@ -67,7 +67,7 @@ export default function DarkModeComponent() {
     },
   }));
   return (
-    <ThemeProvider theme={darkTheme} >
+    <ThemeProvider theme={darkTheme}  >
       <FormControlLabel
         
         control={

@@ -12,14 +12,6 @@ import NavBar from './components/NavBar/NavBar';
 function App() {
   return (
     <div>
-      <div
-        style={{
-          marginLeft: '1.4rem',
-          display: 'flex',
-          flexDirection: 'row-reverse',
-          justifyContent: 'space-between',
-        }}
-      ></div>
       <NavBar />
       <div>
         <Routes>
