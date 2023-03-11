@@ -14,7 +14,7 @@ const HomePage = () => {
   const { players, updatePlayer } = useContext(PlayersContext);
 
   return (
-    <Box m={5}>
+    <Box mx={5} mt={2}>
       <Typography
         variant='h2'
         textAlign={'center'}
@@ -30,6 +30,7 @@ const HomePage = () => {
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}
+        mt={2}
       >
         <Grid item xs={6}>
           <MapAnimation />

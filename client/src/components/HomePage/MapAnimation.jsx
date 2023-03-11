@@ -20,6 +20,8 @@ const MapAnimation = () => {
       am5map.MapChart.new(root, {
         panX: 'rotateX',
         panY: 'translateY',
+        zoomLevel: 1.5,
+        minZoomLevel: 1.5,
         projection: am5map.geoMercator(),
         homeGeoPoint: { latitude: 2, longitude: 2 },
       })
