@@ -1,5 +1,6 @@
-import { forwardRef } from 'react';
+import { forwardRef, useContext } from 'react';
 import PlayerCard from './PlayerCard';
+import { PlayersContext } from '../../context/PlayersContextProvider';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -15,7 +16,9 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const ChoosePlayerModal = ({ open, setOpen, setPlayer1 }) => {
+const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
+  const { players, updatePlayers } = useContext(PlayersContext);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -26,7 +29,10 @@ const ChoosePlayerModal = ({ open, setOpen, setPlayer1 }) => {
 
   const choosePlayer = (playerType) => {
     handleClose();
-    setPlayer1(playerType);
+    const newPlayers = structuredClone(players);
+    newPlayers.player1.role = playerType;
+    updatePlayers(newPlayers);
+    setIsPlayer2LoginModal(true);
   };
 
   return (

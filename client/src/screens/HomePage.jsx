@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid, Button, Typography } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import React, { useState, useContext } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
 import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
+import MapAnimation from '../components/HomePage/MapAnimation';
+import Player2LoginModal from '../components/HomePage/Player2LogInModal';
+import { PlayersContext } from '../context/PlayersContextProvider';
 
 const HomePage = () => {
   // determine if ChoosePlayerModal is open or not
-  const [open, setOpen] = useState(false);
+  const [isChoosePlayerModal, setIsChoosePlayerModal] = useState(false);
+  //
+  const [isPlayer2LoginModal, setIsPlayer2LoginModal] = useState(false);
 
-  const [player1, setPlayer1] = useState(null);
-  const [player2, setPlayer2] = useState(null);
-
-  useEffect(() => {
-    if (player1) {
-      alert('player 2 login?');
-    }
-  }, [player1]);
+  const { players, updatePlayer } = useContext(PlayersContext);
 
   return (
-    <Box m={5} width={'100%'} height={'100vh'}>
-      <Typography variant='h3' textAlign={'center'}>
+    <Box m={5}>
+      <Typography
+        variant='h2'
+        textAlign={'center'}
+        style={{
+          fontFamily: '"Caveat", "cursive"',
+        }}
+      >
         Catch Me If You Can!
       </Typography>
       <Grid
@@ -29,20 +32,20 @@ const HomePage = () => {
         justifyContent={'center'}
       >
         <Grid item xs={6}>
-          <img
-            src='/map.png'
-            alt=''
-            style={{ width: '100%', border: '1px solid black' }}
-          />
+          <MapAnimation />
         </Grid>
         <Grid item xs={4}>
           <ChoosePlayerModal
-            open={open}
-            setOpen={setOpen}
-            setPlayer1={setPlayer1}
+            open={isChoosePlayerModal}
+            setOpen={setIsChoosePlayerModal}
+            setIsPlayer2LoginModal={setIsPlayer2LoginModal}
           />
         </Grid>
       </Grid>
+      <Player2LoginModal
+        open={isPlayer2LoginModal}
+        setOpen={setIsPlayer2LoginModal}
+      />
     </Box>
   );
 };
