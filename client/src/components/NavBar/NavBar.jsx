@@ -27,7 +27,7 @@ const settings = [
   { name: "Login", route: "/Login" },
 ];
 
-function NavBar() {
+function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -45,18 +45,14 @@ function NavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const style = {
-    position: "absolute",
-    left: 15,
-    top: 5
-  };
+
   return (
     <AppBar position="static">
-      <div style={style}>
-        <DarkModeComponent />
-      </div>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <div>
+            <DarkModeComponent theme={props.theme} setTheme={props.setTheme}/>
+          </div>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"

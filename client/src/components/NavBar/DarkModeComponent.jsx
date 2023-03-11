@@ -8,16 +8,11 @@ import {
   styled,
 } from "@mui/material";
 
-export default function DarkModeComponent() {
+export default function DarkModeComponent(props) {
   //MUI DARK MODE
-  const [theme, settheme] = useState(false);
-  const darkTheme = createTheme({
-    palette: {
-      mode: theme ? "dark" : "light",
-    },
-  });
   const handleChange = (event) => {
-    settheme(event.target.checked);
+    props.setTheme(event.target.checked)
+
   };
   const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -67,21 +62,19 @@ export default function DarkModeComponent() {
     },
   }));
   return (
-    <ThemeProvider theme={darkTheme}  >
+
       <FormControlLabel
         
         control={
           <MaterialUISwitch
             sx={{ mt: 1, mb: 1, zIndex:"1300"}}
-            checked={theme}
+            checked={props.theme}
             color="success"
             onChange={handleChange}
             
           />
         }
       />
-      <CssBaseline />
-      
-    </ThemeProvider>
+
   );
 }
