@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { Link } from 'react-router-dom';
 import DarkModeComponent from './DarkModeComponent';
 
@@ -53,7 +54,9 @@ function NavBar(props) {
           <div>
             <DarkModeComponent theme={props.theme} setTheme={props.setTheme} />
           </div>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <FlightTakeoffIcon
+            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+          />
           <Typography
             variant='h6'
             noWrap
@@ -62,14 +65,14 @@ function NavBar(props) {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              fontFamily: '"Caveat", "cursive"',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Catch Me!
           </Typography>
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
