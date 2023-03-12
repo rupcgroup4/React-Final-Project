@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -11,26 +11,29 @@ import {
   Button,
   Tooltip,
   MenuItem,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import { Link } from 'react-router-dom';
-import DarkModeComponent from './DarkModeComponent';
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import AdbIcon from "@mui/icons-material/Adb";
+import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
+import { Link } from "react-router-dom";
+import DarkModeComponent from "./DarkModeComponent";
+import jwt_decode from "jwt-decode";
 
 const pages = [
-  { name: 'Home', route: '/' },
-  { name: 'Leaderboard', route: '/leaderboard' },
-  { name: 'Game Rules', route: '/gamerules' },
+  { name: "Home", route: "/" },
+  { name: "Leaderboard", route: "/leaderboard" },
+  { name: "Game Rules", route: "/gamerules" },
 ];
 const settings = [
-  { name: 'Profile', route: '/profile' },
-  { name: 'Login', route: '/Login' },
+  { name: "Profile", route: "/profile" },
+  // { name: "Logout", route: "/Logout" },
 ];
 
 function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const [user, setUser] = useState({});
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -47,29 +50,67 @@ function NavBar(props) {
     setAnchorElUser(null);
   };
 
+  //Sign in callback
+  const handleCallbackResponse = (res) => {
+    console.log(res.credential);
+    let userObject = jwt_decode(res.credential);
+    console.log(userObject);
+    setUser(userObject);
+    document.getElementById("signInDiv").hidden = true;
+    document.getElementById("userIcon").hidden = false;
+  };
+  const handleSignOut = (event) => { 
+    handleCloseUserMenu();
+    setUser({});
+    document.getElementById("signInDiv").hidden = false;
+    document.getElementById("userIcon").hidden = true;
+  }
+  useEffect(() => {
+    if (document.getElementById("userIcon")) {
+      document.getElementById("userIcon").hidden = true;
+    }
+
+    window.google.accounts.id.initialize({
+      client_id:
+        "183064569344-co9l095h9n0hp4l7mgsrb088akv71eig.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      {
+        theme: "outline",
+        size: "large",
+      }
+    );
+    
+    window.google.accounts.id.prompt();
+
+  }, []);
+
   return (
-    <AppBar position='static'>
-      <Container maxWidth='xl'>
+    <AppBar position="static">
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <div>
             <DarkModeComponent theme={props.theme} setTheme={props.setTheme} />
           </div>
           <FlightTakeoffIcon
-            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
-            component='a'
-            href='/'
+            component="a"
+            href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: "none", md: "flex" },
               fontFamily: '"Caveat", "cursive"',
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             Catch Me!
@@ -130,16 +171,16 @@ function NavBar(props) {
           >
             LOGO
           </Typography> */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Link
                 to={page.route}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: "none", color: "inherit" }}
                 key={page.route}
               >
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page.name}
                 </Button>
@@ -148,39 +189,45 @@ function NavBar(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <Link
-                  to={setting.route}
-                  key={setting.route}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>{setting.name}</Typography>
-                  </MenuItem>
-                </Link>
-              ))}
-            </Menu>
+            <div id="signInDiv"></div>
+            <div id="userIcon">
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar src={user.picture} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <Link
+                    to={setting.route}
+                    key={setting.route}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                  </Link>
+                ))}
+                <MenuItem onClick={ (e) => handleSignOut(e)}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </div>
           </Box>
         </Toolbar>
       </Container>

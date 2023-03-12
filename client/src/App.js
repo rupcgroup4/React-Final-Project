@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Profile from './screens/Profile';
 import Gameboard from './screens/Gameboard';
@@ -19,6 +19,7 @@ function App() {
       mode: theme ? 'dark' : 'light',
     },
   });
+
 
   return (
     <ThemeProvider theme={darkTheme}>
