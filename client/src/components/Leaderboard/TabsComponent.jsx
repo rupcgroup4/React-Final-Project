@@ -1,29 +1,59 @@
-import * as React from 'react';
-import { Box,Tab }  from '@mui/material';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import * as React from "react";
+import { Box, Tab, Typography } from "@mui/material";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import TableComponent from "./TableComponent";
 
-export default function TabsComponent() {
-  const [value, setValue] = React.useState('1');
+export default function TabsComponent(props) {
+  const [value, setValue] = React.useState("Global");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    //set type ? global/spy/agent
+    props.setType(newValue)
+
     setValue(newValue);
+  
+
   };
 
   return (
-    <Box sx={{ width: '100%', typography: 'body1', justifyContent:'center' }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Item One" value="1" />
-            <Tab label="Item Two" value="2" />
-            <Tab label="Item Three" value="3" />
+    <Box sx={{ width: "100%", typography: "body1" }}>
+      <Typography
+        variant="h2"
+        textAlign={"center"}
+        mt={3}
+        mb={3}
+        style={{
+          fontFamily: '"Caveat", "cursive"',
+        }}
+      >
+        Leaderboard
+      </Typography>
+      <TabContext value={value} style={{ display: "none" }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <TabList onChange={handleChange}>
+            <Tab label="Global" value="Global" />
+            <Tab label="Spy" value="Spy" />
+            <Tab label="Agent" value="Agent" />
           </TabList>
         </Box>
-        <TabPanel value="1">Item One</TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="Global">
+          <TableComponent leaderBoard={props.leaderBoard}/>
+        </TabPanel>
+        <TabPanel value="Spy">
+          <TableComponent leaderBoard={props.leaderBoard}/>
+        </TabPanel>
+        <TabPanel value="Agent">
+          <TableComponent leaderBoard={props.leaderBoard}/>
+        </TabPanel>
       </TabContext>
     </Box>
   );
