@@ -4,17 +4,32 @@ export const PlayersContext = createContext();
 
 const PlayersContextProvider = (props) => {
   //Initial players state
-  const [players, setPlayers] = useState({
-    player1: {},
-    player2: {},
-  });
+  const [player1, setPlayer1] = useState(null);
+  const [player2, setPlayer2] = useState(null);
 
-  const updatePlayers = (players) => {
-    setPlayers(players);
+  const player1Login = (player) => {
+    setPlayer1(player);
+  };
+
+  const player2Login = (player) => {
+    setPlayer2(player);
+  };
+
+  const updatePlayersRole = (player1Role, player2Role) => {
+    setPlayer1({ ...player1, role: player1Role });
+    setPlayer2({ ...player2, role: player2Role });
   };
 
   return (
-    <PlayersContext.Provider value={{ players, updatePlayers }}>
+    <PlayersContext.Provider
+      value={{
+        player1,
+        player2,
+        player1Login,
+        updatePlayersRole,
+        player2Login,
+      }}
+    >
       {props.children}
     </PlayersContext.Provider>
   );

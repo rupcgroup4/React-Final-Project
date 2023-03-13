@@ -16,8 +16,10 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const playerTypes = ['spy', 'agnets'];
+
 const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
-  const { players, updatePlayers } = useContext(PlayersContext);
+  const { updatePlayersRole } = useContext(PlayersContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,11 +29,9 @@ const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
     setOpen(false);
   };
 
-  const choosePlayer = (playerType) => {
+  const choosePlayer = (index) => {
     handleClose();
-    const newPlayers = structuredClone(players);
-    newPlayers.player1.role = playerType;
-    updatePlayers(newPlayers);
+    updatePlayersRole(playerTypes[index], playerTypes[index === 0 ? 1 : 0]);
     setIsPlayer2LoginModal(true);
   };
 
@@ -69,14 +69,14 @@ const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
         <DialogContent>
           <Box display={'flex'}>
             <Box
-              onClick={() => choosePlayer('spy')}
+              onClick={() => choosePlayer(0)}
               sx={{ cursor: 'pointer' }}
               m={2}
             >
               <PlayerCard title={'Spy'} />
             </Box>
             <Box
-              onClick={() => choosePlayer('agent')}
+              onClick={() => choosePlayer(1)}
               sx={{ cursor: 'pointer' }}
               m={2}
             >
