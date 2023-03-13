@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   AppBar,
   Box,
@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import DarkModeComponent from "./DarkModeComponent";
 import GoogleSignIn from "../Google-SignIn/GoogleSignIn";
 import GoogleLogout from "../Google-SignIn/GoogleLogout";
+import { PlayersContext } from "../../context/PlayersContextProvider";
+import { useNavigate } from 'react-router-dom';
 
 const pages = [
   { name: "Home", route: "/" },
@@ -27,10 +29,13 @@ const pages = [
 ];
 const settings = [
   { name: "Profile", route: "/profile" },
-  // { name: "Logout", route: "/Logout" },
+  // { name: "Login", route: "/Login" },
 ];
 
 function NavBar(props) {
+  const { player1 } = useContext(PlayersContext);
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -49,8 +54,12 @@ function NavBar(props) {
     setAnchorElUser(null);
   };
 
-
-
+  const handleUser = (e) => { 
+    if (player1) { } //Logout
+    else { 
+      navigate('/Login');
+    }
+  } 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -152,44 +161,45 @@ function NavBar(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <GoogleLogout/>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <Link
-                    to={setting.route}
-                    key={setting.route}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting.name}</Typography>
-                    </MenuItem>
-                  </Link>
-                ))}
-                        {/* <MenuItem onClick={ (e) => handleSignOut(e)}> */}
-                <MenuItem>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
-              </Menu>
-            
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <GoogleLogout />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <Link
+                  to={setting.route}
+                  key={setting.route}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                </Link>
+              ))}
+
+              <MenuItem onClick={ (e) => handleUser(e)}>
+                <Typography textAlign="center">
+                  {player1 ? "Logout" : "Login"}
+                </Typography>
+              </MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </Container>
