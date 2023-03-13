@@ -25,8 +25,6 @@ export const GoogleSignIn = () => {
       <GoogleLogin
         onSuccess={onSuccess}
         onError={onError}
-        size="large"
-        locale="en"
         width="500"
    
       />
