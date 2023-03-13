@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, Divider } from '@mui/material';
 import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
 import MapAnimation from '../components/HomePage/MapAnimation';
 import Player2LoginModal from '../components/HomePage/Player2LogInModal';
@@ -24,6 +24,7 @@ const HomePage = () => {
       >
         Catch Me If You Can!
       </Typography>
+      <Divider />
       <Grid
         container
         spacing={5}
