@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { graph } from '../file';
+import { graph } from '../../file';
+import { shortest_path } from '../../classes/utils/shortestPath';
 
 import {
   Box,
@@ -11,21 +12,60 @@ import {
   Toolbar,
   Typography,
   Container,
+  FormGroup,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
+import Path from './Path';
 
 //This component show the flight that departure from the selected air port on the map
-const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
+const Flights = ({
+  state,
+  selectedAirport,
+  isSpy,
+  map,
+  targetPosition,
+  agentNum,
+  spyLocation,
+  isAgent1Show = null,
+  setIsAgent1Show = null,
+}) => {
   //departure flights from current selected airport on the map
   const [flights, setFlights] = useState();
   //departure flights from current selected airport on the map
   const [selectedAirportflights, setSelectedAirportFlights] = useState();
+  //
+  const [path, setPath] = useState([]);
 
-  const movePlane = (location) => {
+  const calculatePath = (location) => {
+    const ids = Object.keys(graph);
+    const choosedIndex = ids.indexOf(location);
+    let targetIndex;
+    if (isSpy) {
+      targetIndex = ids.indexOf(targetPosition);
+    } else {
+      targetIndex = ids.indexOf(spyLocation);
+    }
+
+    const path = shortest_path(choosedIndex, targetIndex, graph);
+
+    const namePath = path.map((idx) => {
+      return graph[ids[idx]].name;
+    });
+
+    setPath(namePath);
+  };
+
+  const movePlayer = (location) => {
     if (isSpy) {
       map.setPlane(`${state.id} ${location}`);
     } else {
       map.placeOpponentPlane(`${state.id} ${location}`, agentNum);
     }
+  };
+
+  const changeAgent = () => {
+    setIsAgent1Show(isAgent1Show ? false : true);
   };
 
   //this useEffect used to updated the fligts when the currentId is change (selected airPort)
@@ -63,6 +103,27 @@ const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
         marginTop: '10px',
       }}
     >
+      {!isSpy && (
+        <FormGroup>
+          <Box
+            display={'flex'}
+            alignItems={'center'}
+            mb={-10}
+            justifyContent={'flex-end'}
+            zIndex={1}
+          >
+            <Typography ml={5} mr={3}>
+              1
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch onChange={changeAgent} checked={!isAgent1Show} />
+              }
+            />
+            <Typography mr={5}>2</Typography>
+          </Box>
+        </FormGroup>
+      )}
       <AppBar
         position='static'
         sx={{ bgcolor: state.color, borderRadius: '16px' }}
@@ -87,9 +148,8 @@ const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
                 component='h3'
                 sx={{ fontFamily: 'monospace' }}
               >
-                {`${state.id} - `} 
+                {`${state.id} - `}
                 {graph[state.id]?.name}
-
               </Typography>
             </Box>
           </Toolbar>
@@ -107,7 +167,7 @@ const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
           component='h3'
           sx={{ margin: '0.5rem 0 0.5rem 1.5rem' }}
         >
-          Possible Flights:
+          Possible Flights: {flights?.length}
         </Typography>
         <Divider />
         <List
@@ -121,7 +181,7 @@ const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
         >
           {flights?.map((flight, idx) => (
             <div key={idx}>
-              <ListItemButton onClick={() => movePlane(flight)} disabled={true}>
+              <ListItemButton onClick={() => calculatePath(flight)}>
                 <ListItemText primary={graph[flight].name} />
               </ListItemButton>
               {/* {Last flight without divider} */}
@@ -143,6 +203,7 @@ const Flights = ({ state, selectedAirport, isSpy, map, agentNum }) => {
           </p>
         </div>
       ))} */}
+      <Path path={path} />
     </Box>
   );
 };

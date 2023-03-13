@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { graph } from '../file';
+import { graph } from '../../file';
 
 const GameMap = (props) => {
   //on the first time hte component is loaded it will create new Map to the screen
@@ -20,7 +20,7 @@ const GameMap = (props) => {
       id='chartdiv'
       style={{
         width: '100%',
-        height: '88vh',
+        height: '60vh',
         margin: '0 auto',
       }}
     ></div>
