@@ -66,9 +66,13 @@ const MapAnimation = () => {
         chart.set('projection', am5map.geoMercator());
         chart.set('panY', 'translateY');
         chart.set('rotationY', 0);
+        chart.set('zoomLevel', 1.5);
+        chart.set('minZoomLevel', 1.5);
       } else {
         chart.set('projection', am5map.geoOrthographic());
         chart.set('panY', 'rotateY');
+        chart.set('zoomLevel', 1);
+        chart.set('minZoomLevel', 1);
       }
     });
 

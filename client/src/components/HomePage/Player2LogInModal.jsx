@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -9,11 +9,14 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
+import { PlayersContext } from '../../context/PlayersContextProvider';
 
 const Player2LogInModal = ({ open, setOpen }) => {
   const [first, setFirst] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { player2Login } = useContext(PlayersContext);
 
   const navigate = useNavigate();
 
@@ -31,6 +34,28 @@ const Player2LogInModal = ({ open, setOpen }) => {
     /**
      * Needs to add login logic
      */
+
+    const player = {
+      email: email,
+      password: password,
+    };
+
+    /**
+     * add request to server
+     *
+     */
+
+    /**
+     * add if to check if user in response
+     */
+
+    const user = {
+      firstName: 'test',
+      lastName: 'testFamily',
+      email: 'test@test.com',
+    };
+
+    player2Login(user);
 
     handleClose();
   };
