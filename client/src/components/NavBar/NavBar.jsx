@@ -17,7 +17,8 @@ import AdbIcon from "@mui/icons-material/Adb";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import { Link } from "react-router-dom";
 import DarkModeComponent from "./DarkModeComponent";
-import jwt_decode from "jwt-decode";
+import GoogleSignIn from "../Google-SignIn/GoogleSignIn";
+import GoogleLogout from "../Google-SignIn/GoogleLogout";
 
 const pages = [
   { name: "Home", route: "/" },
@@ -32,8 +33,6 @@ const settings = [
 function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const [user, setUser] = useState({});
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -50,43 +49,7 @@ function NavBar(props) {
     setAnchorElUser(null);
   };
 
-  //Sign in callback
-  const handleCallbackResponse = (res) => {
-    console.log(res.credential);
-    let userObject = jwt_decode(res.credential);
-    console.log(userObject);
-    setUser(userObject);
-    document.getElementById("signInDiv").hidden = true;
-    document.getElementById("userIcon").hidden = false;
-  };
-  const handleSignOut = (event) => { 
-    handleCloseUserMenu();
-    setUser({});
-    document.getElementById("signInDiv").hidden = false;
-    document.getElementById("userIcon").hidden = true;
-  }
-  useEffect(() => {
-    if (document.getElementById("userIcon")) {
-      document.getElementById("userIcon").hidden = true;
-    }
 
-    window.google.accounts.id.initialize({
-      client_id:
-        "183064569344-co9l095h9n0hp4l7mgsrb088akv71eig.apps.googleusercontent.com",
-      callback: handleCallbackResponse,
-    });
-
-    window.google.accounts.id.renderButton(
-      document.getElementById("signInDiv"),
-      {
-        theme: "outline",
-        size: "large",
-      }
-    );
-    
-    window.google.accounts.id.prompt();
-
-  }, []);
 
   return (
     <AppBar position="static">
@@ -189,11 +152,9 @@ function NavBar(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <div id="signInDiv"></div>
-            <div id="userIcon">
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar src={user.picture} />
+                  <GoogleLogout/>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -223,11 +184,12 @@ function NavBar(props) {
                     </MenuItem>
                   </Link>
                 ))}
-                <MenuItem onClick={ (e) => handleSignOut(e)}>
+                        {/* <MenuItem onClick={ (e) => handleSignOut(e)}> */}
+                <MenuItem>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               </Menu>
-            </div>
+            
           </Box>
         </Toolbar>
       </Container>
