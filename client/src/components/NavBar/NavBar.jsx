@@ -33,7 +33,7 @@ const settings = [
 ];
 
 function NavBar(props) {
-  const { player1 } = useContext(PlayersContext);
+  const { player1,player1Logout } = useContext(PlayersContext);
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -55,7 +55,7 @@ function NavBar(props) {
   };
 
   const handleUser = (e) => { 
-    if (player1) { } //Logout
+    if (player1) { player1Logout() } //Logout
     else { 
       navigate('/Login');
     }

@@ -10,6 +10,9 @@ const PlayersContextProvider = (props) => {
   const player1Login = (player) => {
     setPlayer1(player);
   };
+  const player1Logout = () => {
+    setPlayer1(null);
+  };
 
   const player2Login = (player) => {
     setPlayer2(player);
@@ -26,6 +29,7 @@ const PlayersContextProvider = (props) => {
         player1,
         player2,
         player1Login,
+        player1Logout,
         updatePlayersRole,
         player2Login,
       }}
