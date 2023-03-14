@@ -120,17 +120,16 @@ export default class Map {
 
     //Create lines holder and lines settings
     this.createLineSeries();
-  
-    this.initiatePlayers(this.spy,  this.agents);
+
+    this.initiatePlayers(this.spy, this.agents);
   };
-  
-   initiatePlayers=(spy,agents) =>{
+
+  initiatePlayers = (spy, agents) => {
     this.planeSeries = null;
     this.opponentPlaneSeries = [];
     this.spy = spy;
     this.agents = agents;
-    
-    console.log("initiatePlayers", this.spy.id,  this.agents);
+
     //select airport based on id starting point
     // this.selectAirport(selectedAirport);
     //intiate the player1 plane based on id starting point
@@ -138,26 +137,11 @@ export default class Map {
     //Set spy shortest path to traget lines
     this.setSplyShortestPathLines();
 
-    console.log("this.chart.series:", this.chart.series);
-    console.log("this.chart.series._values", this.chart.series._values);
-   
-   // console.log("this.chart.series.contains", this.chart.series.pop());
-
-
-  
     //intiate the player2 plane based on id starting point
     this.agents.map((agent, idx) =>
       this.initiateOpponentPlane(agent.id, agent.color, idx)
-      
     );
-     
-    //console.log("pop", this.chart.series.removeIndex());
-    //console.log("this.chart.series._values", this.chart.series._values);
-
-    //console.log("this.chart.series.contains", this.chart.series.pop());
-    //console.log("this.chart.series.contains", this.chart.series.pop());
-
-  }
+  };
 
   //Create the switch toggle between regular map and globe
   createSwitchButtonForGlobe = (chart, root) => {
@@ -309,15 +293,6 @@ export default class Map {
     });
 
     for (let i in graph) {
-      // const dest = [
-      //   ...graph.edges.filter((flight) => {
-      //     if (flight.from === i) {
-      //       return flight.to;
-      //     } else {
-      //       return null;
-      //     }
-      //   }),
-      // ];
       this.originCities.push({
         id: i,
         title: graph[i].name,
@@ -436,6 +411,8 @@ export default class Map {
 
   //display the current player plane on the screen
   initiatePlane = (selectedAirport, color) => {
+    this.chart.series.removeValue(this.planeSeries);
+
     this.spy.id = selectedAirport;
     //create the plane
     const planeSeries = this.chart.series.push(
@@ -470,6 +447,8 @@ export default class Map {
 
   //display the opponent player plane on the screen
   initiateOpponentPlane = (id, color, idx) => {
+    this.chart.series.removeValue(this.opponentPlaneSeries[idx]);
+
     //create the plane
     const planeSeries = this.chart.series.push(
       am5map.MapPointSeries.new(this.root, {})
@@ -507,8 +486,6 @@ export default class Map {
   placeOpponentPlane = (ids, agentNum) => {
     const idsArray = ids.split(' ');
     if (idsArray[0] !== this.agents[agentNum].id) return;
-
-console.log('placeOpponentPlane', idsArray[0],this.chart.series, this.opponentPlaneSeries);
 
     this.chart.series.removeValue(this.opponentPlaneSeries[agentNum]);
 
@@ -551,80 +528,75 @@ console.log('placeOpponentPlane', idsArray[0],this.chart.series, this.opponentPl
     });
 
     this.agents[agentNum].id = idsArray[1];
-    this.updateAgentLocationId(idsArray[1], agentNum);
-
-    console.log("moveopponents- upateAgentLocation", idsArray[1], "agentNum", agentNum);
+    this.updateAgentLocationId(this.agents);
   };
 
-  setPlane =  (ids) => {
-    return new Promise((resolve) =>{
+  setPlane = (ids) => {
+    return new Promise((resolve) => {
+      const idsArray = ids.split(' ');
+      if (idsArray[0] !== this.spy.id) return; //fly to planes current position
 
-    const idsArray = ids.split(' ');
-    if (idsArray[0] !== this.spy.id) return; //fly to planes current position
+      // const origin = airportsSeries.getDataItemById(idsArray[0]);
+      // const des = airportsSeries.getDataItemById(idsArray[1]);
 
-    // const origin = airportsSeries.getDataItemById(idsArray[0]);
-    // const des = airportsSeries.getDataItemById(idsArray[1]);
+      this.chart.series.removeValue(this.planeSeries);
 
-    this.chart.series.removeValue(this.planeSeries);
+      this.planeSeries = this.chart.series.push(
+        am5map.MapPointSeries.new(this.root, {})
+      );
 
-    this.planeSeries = this.chart.series.push(
-      am5map.MapPointSeries.new(this.root, {})
-    );
+      const plane = am5.Graphics.new(this.root, {
+        svgPath:
+          'm2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47',
+        scale: 0.06,
+        centerY: am5.p50,
+        centerX: am5.p50,
+        fill: am5.color(this.spy.color),
+      });
 
-    const plane = am5.Graphics.new(this.root, {
-      svgPath:
-        'm2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47',
-      scale: 0.06,
-      centerY: am5.p50,
-      centerX: am5.p50,
-      fill: am5.color(this.spy.color),
+      const root = this.root;
+      this.planeSeries.bullets.push(function () {
+        const container = am5.Container.new(root, {});
+        container.children.push(plane);
+        return am5.Bullet.new(root, { sprite: container });
+      });
+
+      const lineDataItem = this.allLineSeries.states._entity._dataItems.filter(
+        (item) => item.dataContext.geometry.id === ids
+      );
+
+      const planeDataItem = this.planeSeries.pushDataItem({
+        lineDataItem: lineDataItem[0],
+        positionOnLine: 0,
+        autoRotate: true,
+      });
+
+      planeDataItem.animate({
+        key: 'positionOnLine',
+        to: 1,
+        duration: 1000,
+        loops: false,
+        easing: am5.ease.linear,
+      });
+
+      this.spy.id = idsArray[1];
+      this.updateSpyPlaneLocationId(idsArray[1]);
+      setTimeout(() => {
+        // this.selectAirport(idsArray[1]);
+
+        this.setSplyShortestPathLines();
+
+        resolve(true);
+      }, 1000);
+
+      //   planeDataItem.on('positionOnLine', function (value) {
+      //     if (value >= 0.99) {
+      //       plane.set('rotation', 180);
+      //     } else if (value <= 0.01) {
+      //       plane.set('rotation', 0);
+      //     }
+      //   });
     });
-
-    const root = this.root;
-    this.planeSeries.bullets.push(function () {
-      const container = am5.Container.new(root, {});
-      container.children.push(plane);
-      return am5.Bullet.new(root, { sprite: container });
-    });
-
-    const lineDataItem = this.allLineSeries.states._entity._dataItems.filter(
-      (item) => item.dataContext.geometry.id === ids
-    );
-
-    const planeDataItem = this.planeSeries.pushDataItem({
-      lineDataItem: lineDataItem[0],
-      positionOnLine: 0,
-      autoRotate: true,
-    });
-
-    planeDataItem.animate({
-      key: 'positionOnLine',
-      to: 1,
-      duration: 1000,
-      loops: false,
-      easing: am5.ease.linear,
-    });
-
-    this.spy.id = idsArray[1];
-    this.updateSpyPlaneLocationId(idsArray[1]);
-    setTimeout(() => {
-      // this.selectAirport(idsArray[1]);
-
-      this.setSplyShortestPathLines();
-      
-      resolve(true)
-
-    }, 1000);
-
-    //   planeDataItem.on('positionOnLine', function (value) {
-    //     if (value >= 0.99) {
-    //       plane.set('rotation', 180);
-    //     } else if (value <= 0.01) {
-    //       plane.set('rotation', 0);
-    //     }
-    //   });
-
-  })
   };
 
   // This function selects an airport and displays all flights departing from that airport
@@ -663,18 +635,4 @@ console.log('placeOpponentPlane', idsArray[0],this.chart.series, this.opponentPl
 
     this.spyShortestPathLines.data.setAll(lineSeriesData);
   };
-
-
-  deleteAllPlayersFromMap =() =>{
-    return new Promise((resolve) => {
-
-    this.chart.series.removeValue(this.planeSeries);
-    this.chart.series.removeValue(this.opponentPlaneSeries[1]);
-    this.chart.series.removeValue(this.opponentPlaneSeries[0]);
-    this.spyShortestPathLines.data.setAll([]);
-
-
-resolve(true)
-    })
-  }
 }

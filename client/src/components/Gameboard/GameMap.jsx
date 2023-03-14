@@ -1,19 +1,17 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { graph } from '../../file';
+import React, { useLayoutEffect } from 'react';
 
-const GameMap = (props) => {
+const GameMap = ({ map, graph }) => {
   //on the first time hte component is loaded it will create new Map to the screen
   //this happens only once
   useLayoutEffect(() => {
-    if (props.map) {
-      props.map.createMap(props.graph);
+    if (map) {
+      map.createMap(graph);
 
       return () => {
-        props.map.root.dispose();
+        map.root.dispose();
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.map]);
+  }, [graph, map]);
 
   return (
     <div

@@ -1,10 +1,13 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
-const GameDescribe = () => {
+const GameDescribe = ({ resetGame, message }) => {
   return (
-    <Box display={'flex'} justifyContent={'center'}>
-      GameDescribe
+    <Box m={1} alignItems={'center'} textAlign={'center'}>
+      <Typography>{message}</Typography>
+      <Button variant='contained' size='large' onClick={resetGame}>
+        Reset Game
+      </Button>
     </Box>
   );
 };

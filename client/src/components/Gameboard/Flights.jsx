@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { graph } from '../../file';
 import { shortest_path } from '../../classes/utils/shortestPath';
-
 import {
   Box,
   List,
   ListItemText,
   Divider,
   ListItemButton,
-  AppBar,
-  Toolbar,
   Typography,
-  Container,
-  FormGroup,
-  Switch,
-  FormControlLabel,
 } from '@mui/material';
 import Path from './Path';
 
 //This component show the flight that departure from the selected air port on the map
 const Flights = ({
   state,
-  selectedAirport,
   isSpy,
-  map,
   targetPosition,
+  turn,
+  spyMove,
+  agentMove,
   agentNum,
   spyLocation,
-  isAgent1Show = null,
-  setIsAgent1Show = null,
 }) => {
+  const role = isSpy ? 'spy' : `agent ${agentNum + 1}`;
   //departure flights from current selected airport on the map
   const [flights, setFlights] = useState();
-  //departure flights from current selected airport on the map
-  const [selectedAirportflights, setSelectedAirportFlights] = useState();
+
   //
   const [path, setPath] = useState([]);
 
@@ -57,40 +49,18 @@ const Flights = ({
   };
 
   const movePlayer = (location) => {
-    if (isSpy) {
-      map.setPlane(`${state.id} ${location}`);
-    } else {
-      map.placeOpponentPlane(`${state.id} ${location}`, agentNum);
+    if (isSpy && turn === role) {
+      spyMove(location);
+    } else if (turn === role) {
+      agentMove(location, agentNum);
     }
   };
 
-  const changeAgent = () => {
-    setIsAgent1Show(isAgent1Show ? false : true);
-  };
-
   //this useEffect used to updated the fligts when the currentId is change (selected airPort)
   useEffect(() => {
-    const flights = graph[state.id]?.destinations;
-    //console.log("state.id= ", graph[state.id]);
-    // const flights = graph.edges.filter((flight) => flight.from === state.id);
+    const flights = graph[state?.id]?.destinations;
     setFlights(flights);
-  }, [state.id]);
-
-  //this useEffect used to updated the fligts when the currentId is change (selected airPort)
-  useEffect(() => {
-    // const flights = graph.edges.filter(
-    //   (flight) => flight.from === selectedAirport
-    // );
-    const flights = graph[selectedAirport]?.destinations;
-    setSelectedAirportFlights(flights);
-  }, [selectedAirport]);
-
-  // useEffect(() => {
-  //   const AirportNames = graph.map((airport) => (
-  //     console.log(airport)
-  //   ));
-
-  // }, []);
+  }, [state?.id]);
 
   return (
     <Box
@@ -100,61 +70,27 @@ const Flights = ({
         boxShadow: 2,
         borderRadius: '16px',
         margin: 'auto',
-        marginTop: '10px',
       }}
     >
-      {!isSpy && (
-        <FormGroup>
-          <Box
-            display={'flex'}
-            alignItems={'center'}
-            mb={-10}
-            justifyContent={'flex-end'}
-            zIndex={1}
-          >
-            <Typography ml={5} mr={3}>
-              1
-            </Typography>
-            <FormControlLabel
-              control={
-                <Switch onChange={changeAgent} checked={!isAgent1Show} />
-              }
-            />
-            <Typography mr={5}>2</Typography>
-          </Box>
-        </FormGroup>
-      )}
-      <AppBar
-        position='static'
-        sx={{ bgcolor: state.color, borderRadius: '16px' }}
+      <Box
+        pl={2}
+        sx={{ bgcolor: state?.color, borderRadius: '16px' }}
+        color={'white'}
       >
-        <Container maxWidth='xl'>
-          <Toolbar disableGutters>
-            <Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-
-                  color: `white`,
-                }}
-              >
-                {isSpy ? 'Spy' : `Agent ${agentNum + 1}`} - Position:
-              </Typography>
-              <Typography
-                mt={0}
-                variant='h7'
-                component='h3'
-                sx={{ fontFamily: 'monospace' }}
-              >
-                {`${state.id} - `}
-                {graph[state.id]?.name}
-              </Typography>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
+        <Typography
+          variant='h6'
+          sx={{
+            fontFamily: 'monospace',
+            fontWeight: 700,
+            textTransform: 'capitalize',
+          }}
+        >
+          {role}
+        </Typography>
+        <Typography mt={0} variant='h6' sx={{ fontFamily: 'monospace' }}>
+          Position: {graph[state?.id]?.name}
+        </Typography>
+      </Box>
       <Box
         sx={{
           borderRadius: '16px',
@@ -177,32 +113,19 @@ const Flights = ({
             overflow: 'auto',
             '&::-webkit-scrollbar': { display: 'none' },
           }}
-          component='nav'
         >
           {flights?.map((flight, idx) => (
-            <div key={idx}>
-              <ListItemButton onClick={() => calculatePath(flight)}>
+            <Box key={idx}>
+              <ListItemButton onClick={() => movePlayer(flight)}>
                 <ListItemText primary={graph[flight].name} />
               </ListItemButton>
               {/* {Last flight without divider} */}
-              {graph[Object.keys(graph)[Object.keys(graph).length - 1]] ===
-              graph[flight] ? (
-                <Divider />
-              ) : (
-                ''
-              )}
-            </div>
+              {idx === Object.keys(graph).length - 1 && <Divider />}
+            </Box>
           ))}
         </List>
       </Box>
-      {/* <h5>Selected Airport flights</h5>
-      {selectedAirportflights?.map((flight, idx) => (
-        <div key={idx}>
-          <p>
-            from {selectedAirport} to {flight}
-          </p>
-        </div>
-      ))} */}
+
       <Path path={path} />
     </Box>
   );
