@@ -1,4 +1,6 @@
 import {Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell} from '@mui/material'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -10,7 +12,10 @@ export default function UsersTotalGameStats({usersGameStats}){
         <TableHead>
           <TableRow >
             <TableCell >Games Played: {usersGameStats.gamesPlayed}</TableCell>
-            <TableCell >Games Won: {usersGameStats.gamesWon}</TableCell>
+            <TableCell >
+                <FontAwesomeIcon icon={faTrophy} color="yellow" />
+                Games Won: {usersGameStats.gamesWon}
+            </TableCell>
             <TableCell >Win% : {usersGameStats.winPersentage}%</TableCell>
           </TableRow>
         </TableHead>
