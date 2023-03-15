@@ -142,7 +142,12 @@ const Gameboard = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <GameDescribe resetGame={resetGame} message={message} steps={steps} />
+      <GameDescribe
+        resetGame={resetGame}
+        message={message}
+        steps={steps}
+        turn={turn}
+      />
       <Grid container spacing={0.5} mt={5}>
         <Grid item xs={3}>
           <Flights
