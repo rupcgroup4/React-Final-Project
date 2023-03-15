@@ -411,8 +411,6 @@ export default class Map {
 
   //display the current player plane on the screen
   initiatePlane = (selectedAirport, color) => {
-    this.chart.series.removeValue(this.planeSeries);
-
     this.spy.id = selectedAirport;
     //create the plane
     const planeSeries = this.chart.series.push(
@@ -447,8 +445,6 @@ export default class Map {
 
   //display the opponent player plane on the screen
   initiateOpponentPlane = (id, color, idx) => {
-    this.chart.series.removeValue(this.opponentPlaneSeries[idx]);
-
     //create the plane
     const planeSeries = this.chart.series.push(
       am5map.MapPointSeries.new(this.root, {})

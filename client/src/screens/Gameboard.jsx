@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { PlayersContext } from '../context/PlayersContextProvider';
 import GameMap from '../components/Gameboard/GameMap';
 import Flights from '../components/Gameboard/Flights';
@@ -12,17 +6,9 @@ import { graph } from '../file';
 import Map from '../classes/Map';
 import axios from 'axios';
 import { shortest_path } from '../classes/utils/shortestPath';
-import {
-  Box,
-  Grid,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  Typography,
-} from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import GameOverModalComponent from '../components/Gameboard/GameOverModalComponent';
 import GameDescribe from '../components/Gameboard/GameDescribe';
-import Path from '../components/Gameboard/Path';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
 
 const init_spy_position = 0;
@@ -48,6 +34,7 @@ const initial_agents = [
 
 const Gameboard = () => {
   const [turn, setTurn] = useState(null);
+  const [steps, setSteps] = useState(null);
 
   const { player1, player2 } = useContext(PlayersContext);
 
@@ -95,6 +82,7 @@ const Gameboard = () => {
   }, []);
 
   const startGame = useCallback(() => {
+    setSteps(0);
     setTargetPosition(flightsIds[init_target_position]);
     setSpy(initial_spy);
     setAgents(initial_agents);
@@ -103,14 +91,19 @@ const Gameboard = () => {
   }, [createNewMap]);
 
   const spyMove = (location) => {
-    setMessage(`Spy moved from ${spy.id} to ${location}`);
+    setMessage(
+      `Spy moved from ${graph[spy.id].name} to ${graph[location].name}`
+    );
     map.setPlane(`${spy.id} ${location}`);
     setTurn('agent 1');
+    setSteps((prev) => prev + 1);
   };
 
   const agentMove = (location, agentNum) => {
     setMessage(
-      `Agent ${agentNum + 1} moved from ${agents[agentNum].id} to ${location}`
+      `Agent ${agentNum + 1} moved from ${graph[agents[agentNum].id].name} to ${
+        graph[location].name
+      }`
     );
     map.placeOpponentPlane(`${agents[agentNum].id} ${location}`, agentNum);
     if (turn === 'agent 1') {
@@ -118,6 +111,7 @@ const Gameboard = () => {
     } else {
       setTurn('spy');
     }
+    setSteps((prev) => prev + 1);
   };
 
   const checkWin = useCallback(async () => {
@@ -148,8 +142,7 @@ const Gameboard = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <GameDescribe resetGame={resetGame} message={message} />
-
+      <GameDescribe resetGame={resetGame} message={message} steps={steps} />
       <Grid container spacing={0.5} mt={5}>
         <Grid item xs={3}>
           <Flights
