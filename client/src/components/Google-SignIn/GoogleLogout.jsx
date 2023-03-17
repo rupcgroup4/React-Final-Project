@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import { googleLogout } from "@react-oauth/google";
-import { Avatar } from "@mui/material";
-import { PlayersContext } from "../../context/PlayersContextProvider";
+import React, { useState, useContext, useEffect } from 'react';
+import { googleLogout } from '@react-oauth/google';
+import { Avatar } from '@mui/material';
+import { PlayersContext } from '../../context/PlayersContextProvider';
+import usePlayersStore from '../../store/playerStore';
 
 export const GoogleLogout = () => {
-  const { player1 } = useContext(PlayersContext);
+  const { player1 } = usePlayersStore();
 
   useEffect(() => {
     if (player1 === null) {
@@ -18,7 +19,7 @@ export const GoogleLogout = () => {
     </div>
   ) : (
     <div>
-      <Avatar src="/static/images/avatar/2.jpg" />
+      <Avatar src='/static/images/avatar/2.jpg' />
     </div>
   );
 };

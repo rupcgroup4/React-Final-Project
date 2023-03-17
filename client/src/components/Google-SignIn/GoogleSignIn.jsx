@@ -3,10 +3,10 @@ import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 import { PlayersContext } from '../../context/PlayersContextProvider';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../store/playerStore';
+import usePlayersStore from '../../store/playerStore';
 
 export const GoogleSignIn = () => {
-  const { player1Login } = useUserStore();
+  const { player1Login } = usePlayersStore();
 
   const navigate = useNavigate();
 

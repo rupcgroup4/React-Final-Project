@@ -21,7 +21,7 @@ import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
 import GoogleLogout from '../Google-SignIn/GoogleLogout';
 import { PlayersContext } from '../../context/PlayersContextProvider';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../store/playerStore';
+import usePlayersStore from '../../store/playerStore';
 
 const pages = [
   { name: 'Home', route: '/' },
@@ -34,7 +34,7 @@ const settings = [
 ];
 
 function NavBar(props) {
-  const { player1, player1Logout } = useUserStore();
+  const { player1, player1Logout } = usePlayersStore();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);

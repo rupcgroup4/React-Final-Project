@@ -4,7 +4,7 @@ import { PlayersContext } from '../context/PlayersContextProvider';
 import UsersGamesData from '../components/Profile/UsersGamesData';
 import UsesTotalGameStats from '../components/Profile/UsersTotalGameStats';
 import { Box, Typography } from '@mui/material';
-import useUserStore from '../store/playerStore';
+import usePlayersStore from '../store/playerStore';
 
 //temp game data hardcoded
 const gameData = [
@@ -58,7 +58,7 @@ const usersGameStats = {
 };
 
 const Profile = () => {
-  const { player1 } = useUserStore();
+  const { player1 } = usePlayersStore();
   console.log('player1= ', player1);
 
   return (
