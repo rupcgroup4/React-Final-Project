@@ -15,19 +15,32 @@ namespace server.Controllers
         //Player log in
         public IHttpActionResult Post([FromBody] JObject emailAndPassword)
         {
+            try
+            {
+                Player player = new Player();
 
-            Player player = new Player();
+                string email = (string)emailAndPassword["email"];
+                string password = (string)emailAndPassword["password"];
 
-            string email = (string)emailAndPassword["email"];
-            string password = (string)emailAndPassword["password"];
+                player = player.PlayerLogin(email, password);
 
-            player = player.PlayerLogin(email, password);
+                if (player == null)
+                {
+                    return Content(HttpStatusCode.NotFound, "User not exist");
+                }
 
-            if (player == null) return Content(HttpStatusCode.NotFound, "User not exist");
+                if (player.FirstName == null)
+                {
+                    return Content(HttpStatusCode.Unauthorized, "Password not match");
+                }
 
-            if(player.FirstName == null) return Content(HttpStatusCode.Unauthorized, "Password not match");
+                return Ok(player);
+            } 
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
+            }
             
-            return Ok(player);
         }
         
 

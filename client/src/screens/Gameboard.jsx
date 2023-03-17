@@ -51,7 +51,9 @@ const Gameboard = () => {
   //represent which agents num to present in agents Flights component
   const [isAgent1Show, setIsAgent1Show] = useState(true);
   //messgae for game describe
-  const [message, setMessage] = useState('');
+  const [gameDescribeMessage, setGameDescribeMessage] = useState('');
+  //
+  const [winner, setWinner] = useState(null);
 
   const changeAgent = () => {
     setIsAgent1Show(isAgent1Show ? false : true);
@@ -69,6 +71,20 @@ const Gameboard = () => {
     setAgents(agents);
   };
 
+  const saveGameStats = useCallback(async () => {
+    const spyEmail = 'Email' in player1 ? player1.Email : 'Guest';
+    const agentsEmail = 'Email' in player2 ? player2.Email : 'Guest';
+
+    const res = await axios.post('http://localhost:49269/api/games', {
+      Date: new Date().toLocaleDateString(),
+      Spy: spyEmail,
+      Agents: agentsEmail,
+      Steps: steps,
+      Winner: winner,
+    });
+    console.log(res);
+  }, [player1, player2, steps, winner]);
+
   const createNewMap = useCallback(() => {
     const map = new Map(
       structuredClone(initial_spy),
@@ -82,6 +98,7 @@ const Gameboard = () => {
   }, []);
 
   const startGame = useCallback(() => {
+    setWinner(null);
     setSteps(0);
     setTargetPosition(flightsIds[init_target_position]);
     setSpy(initial_spy);
@@ -91,7 +108,7 @@ const Gameboard = () => {
   }, [createNewMap]);
 
   const spyMove = (location) => {
-    setMessage(
+    setGameDescribeMessage(
       `Spy moved from ${graph[spy.id].name} to ${graph[location].name}`
     );
     map.setPlane(`${spy.id} ${location}`);
@@ -100,7 +117,7 @@ const Gameboard = () => {
   };
 
   const agentMove = (location, agentNum) => {
-    setMessage(
+    setGameDescribeMessage(
       `Agent ${agentNum + 1} moved from ${graph[agents[agentNum].id].name} to ${
         graph[location].name
       }`
@@ -120,18 +137,30 @@ const Gameboard = () => {
     if (isAgentsWin) {
       await sleep(1000);
       alert('agents win');
+      const isPlayer1Win = player1.role === 'agents';
+      const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
+      setWinner(winnerEmail);
     }
     if (isSpyWin) {
       await sleep(1000);
       alert('spy win');
+      const isPlayer1Win = player1.role === 'spy';
+      const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
+      setWinner(winnerEmail);
     }
     if (isSpyWin || isAgentsWin) {
       setTurn('');
     }
-  }, [agents, spy?.id, targetPosition]);
+  }, [
+    agents,
+    player1?.Email,
+    player1?.role,
+    player2?.Email,
+    spy?.id,
+    targetPosition,
+  ]);
 
   const resetGame = () => {
-    map.initiatePlayers(initial_spy, initial_agents);
     startGame();
   };
 
@@ -143,11 +172,17 @@ const Gameboard = () => {
     checkWin();
   }, [spy, agents, targetPosition, checkWin]);
 
+  useEffect(() => {
+    if (winner) {
+      saveGameStats();
+    }
+  }, [saveGameStats, winner]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <GameDescribe
         resetGame={resetGame}
-        message={message}
+        message={gameDescribeMessage}
         steps={steps}
         turn={turn}
       />
