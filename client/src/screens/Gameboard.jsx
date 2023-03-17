@@ -5,7 +5,6 @@ import Flights from '../components/Gameboard/Flights';
 import { graph } from '../file';
 import Map from '../classes/Map';
 import axios from 'axios';
-import { shortest_path } from '../classes/utils/shortestPath';
 import { Box, Grid } from '@mui/material';
 import GameOverModalComponent from '../components/Gameboard/GameOverModalComponent';
 import GameDescribe from '../components/Gameboard/GameDescribe';
@@ -131,34 +130,31 @@ const Gameboard = () => {
     setSteps((prev) => prev + 1);
   };
 
+  const setWinnerEmail = useCallback(
+    (winRole) => {
+      const isPlayer1Win = player1.role === winRole;
+      const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
+      setWinner(winnerEmail);
+    },
+    [player1?.Email, player1?.role, player2?.Email]
+  );
+
   const checkWin = useCallback(async () => {
     const isSpyWin = spy?.id === targetPosition;
     const isAgentsWin = agents.some((agent) => agent?.id === spy?.id);
     if (isAgentsWin) {
       await sleep(1000);
       alert('agents win');
-      const isPlayer1Win = player1.role === 'agents';
-      const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
-      setWinner(winnerEmail);
-    }
-    if (isSpyWin) {
+      setWinnerEmail('agents');
+    } else if (isSpyWin) {
       await sleep(1000);
       alert('spy win');
-      const isPlayer1Win = player1.role === 'spy';
-      const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
-      setWinner(winnerEmail);
+      setWinnerEmail('spy');
     }
     if (isSpyWin || isAgentsWin) {
       setTurn('');
     }
-  }, [
-    agents,
-    player1?.Email,
-    player1?.role,
-    player2?.Email,
-    spy?.id,
-    targetPosition,
-  ]);
+  }, [agents, setWinnerEmail, spy?.id, targetPosition]);
 
   const resetGame = () => {
     startGame();
