@@ -125,6 +125,9 @@ const Gameboard = () => {
       await sleep(1000);
       alert('spy win');
     }
+    if (isSpyWin || isAgentsWin) {
+      setTurn('');
+    }
   }, [agents, spy?.id, targetPosition]);
 
   const resetGame = () => {

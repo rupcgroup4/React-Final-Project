@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { PlayersContext } from '../../context/PlayersContextProvider';
+import axios from 'axios';
 
 const Player2LogInModal = ({ open, setOpen }) => {
   const [first, setFirst] = useState(true);
@@ -28,35 +29,20 @@ const Player2LogInModal = ({ open, setOpen }) => {
     setOpen(false);
   };
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
 
-    /**
-     * Needs to add login logic
-     */
+    const res = await axios
+      .post('http://localhost:49269/api/players', {
+        email,
+        password,
+      })
+      .catch((e) => {
+        alert(e.response.data);
+      });
 
-    const player = {
-      email: email,
-      password: password,
-    };
-
-    /**
-     * add request to server
-     *
-     */
-
-    /**
-     * add if to check if user in response
-     */
-
-    const user = {
-      firstName: 'test',
-      lastName: 'testFamily',
-      email: 'test@test.com',
-    };
-
+    const user = res.data;
     player2Login(user);
-
     handleClose();
   };
 
