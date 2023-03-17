@@ -1,8 +1,9 @@
-import { forwardRef, useContext } from 'react';
-import PlayerCard from './PlayerCard';
-import { PlayersContext } from '../../context/PlayersContextProvider';
-import SendIcon from '@mui/icons-material/Send';
-import CloseIcon from '@mui/icons-material/Close';
+import { forwardRef, useContext } from "react";
+import PlayerCard from "./PlayerCard";
+import { PlayersContext } from "../../context/PlayersContextProvider";
+import SendIcon from "@mui/icons-material/Send";
+import FlightIcon from '@mui/icons-material/Flight';
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Typography,
@@ -10,13 +11,13 @@ import {
   Dialog,
   DialogContent,
   Slide,
-} from '@mui/material';
+} from "@mui/material";
 
 const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const playerTypes = ['spy', 'agnets'];
+const playerTypes = ["spy", "agnets"];
 
 const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
   const { updatePlayersRole } = useContext(PlayersContext);
@@ -38,13 +39,14 @@ const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
   return (
     <div>
       <Button
-        variant='outlined'
-        size='large'
+        variant="contained"
+        size="large"
         fullWidth={true}
-        endIcon={<SendIcon />}
+        endIcon={<FlightIcon />}
         onClick={handleClickOpen}
+        style={{height:"5rem"}}
       >
-        <Typography variant='h6'>Play</Typography>
+        <Typography variant="h6" >Play Game</Typography>
       </Button>
 
       <Dialog
@@ -52,35 +54,35 @@ const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <Box
-          display={'flex'}
-          justifyContent={'space-between'}
-          alignItems={'center'}
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
           mx={2}
         >
-          <Typography variant='h5'>Choose side in the battle</Typography>
+          <Typography variant="h5">Choose side in the battle</Typography>
           <Button onClick={handleClose}>
-            <CloseIcon fontSize='large' />
+            <CloseIcon fontSize="large" />
           </Button>
         </Box>
 
         <DialogContent>
-          <Box display={'flex'}>
+          <Box display={"flex"}>
             <Box
               onClick={() => choosePlayer(0)}
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: "pointer" }}
               m={2}
             >
-              <PlayerCard title={'Spy'} />
+              <PlayerCard title={"Spy"} />
             </Box>
             <Box
               onClick={() => choosePlayer(1)}
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: "pointer" }}
               m={2}
             >
-              <PlayerCard title={'Agents'} />
+              <PlayerCard title={"Agents"} />
             </Box>
           </Box>
         </DialogContent>

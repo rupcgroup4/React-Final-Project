@@ -65,7 +65,8 @@ const Login = () => {
             autoComplete="current-password"
           />
           <div style={{ margin: "auto" }}>
-            <GoogleSignIn />
+            
+            <GoogleSignIn position={1} />
           </div>
 
           <Button
