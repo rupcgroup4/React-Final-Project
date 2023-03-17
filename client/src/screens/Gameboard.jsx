@@ -9,6 +9,7 @@ import { Box, Grid } from '@mui/material';
 import GameOverModalComponent from '../components/Gameboard/GameOverModalComponent';
 import GameDescribe from '../components/Gameboard/GameDescribe';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
+import useUserStore from '../store/playerStore';
 
 const init_spy_position = 0;
 const init_agent1_position = 1;
@@ -35,7 +36,7 @@ const Gameboard = () => {
   const [turn, setTurn] = useState(null);
   const [steps, setSteps] = useState(null);
 
-  const { player1, player2 } = useContext(PlayersContext);
+  const { player1, player2 } = useUserStore();
 
   //Hold map class object
   const [map, setMap] = useState(null);

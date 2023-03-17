@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from 'react';
 import {
   AppBar,
   Box,
@@ -11,29 +11,30 @@ import {
   Button,
   Tooltip,
   MenuItem,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
-import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
-import { Link } from "react-router-dom";
-import DarkModeComponent from "./DarkModeComponent";
-import GoogleSignIn from "../Google-SignIn/GoogleSignIn";
-import GoogleLogout from "../Google-SignIn/GoogleLogout";
-import { PlayersContext } from "../../context/PlayersContextProvider";
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import AdbIcon from '@mui/icons-material/Adb';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import { Link } from 'react-router-dom';
+import DarkModeComponent from './DarkModeComponent';
+import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
+import GoogleLogout from '../Google-SignIn/GoogleLogout';
+import { PlayersContext } from '../../context/PlayersContextProvider';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../store/playerStore';
 
 const pages = [
-  { name: "Home", route: "/" },
-  { name: "Leaderboard", route: "/leaderboard" },
-  { name: "Game Rules", route: "/gamerules" },
+  { name: 'Home', route: '/' },
+  { name: 'Leaderboard', route: '/leaderboard' },
+  { name: 'Game Rules', route: '/gamerules' },
 ];
 const settings = [
-  { name: "Profile", route: "/profile" },
+  { name: 'Profile', route: '/profile' },
   // { name: "Login", route: "/Login" },
 ];
 
 function NavBar(props) {
-  const { player1,player1Logout } = useContext(PlayersContext);
+  const { player1, player1Logout } = useUserStore();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -54,35 +55,37 @@ function NavBar(props) {
     setAnchorElUser(null);
   };
 
-  const handleUser = (e) => { 
-    if (player1) { player1Logout() } //Logout
-    else { 
+  const handleUser = (e) => {
+    if (player1) {
+      player1Logout();
+    } //Logout
+    else {
       navigate('/Login');
     }
-  } 
+  };
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position='static'>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <div>
             <DarkModeComponent theme={props.theme} setTheme={props.setTheme} />
           </div>
           <FlightTakeoffIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
           />
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="a"
-            href="/"
+            component='a'
+            href='/'
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: 'none', md: 'flex' },
               fontFamily: '"Caveat", "cursive"',
               fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
             }}
           >
             Catch Me!
@@ -143,16 +146,16 @@ function NavBar(props) {
           >
             LOGO
           </Typography> */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link
                 to={page.route}
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{ textDecoration: 'none', color: 'inherit' }}
                 key={page.route}
               >
                 <Button
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page.name}
                 </Button>
@@ -161,23 +164,23 @@ function NavBar(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <GoogleLogout />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
+              sx={{ mt: '45px' }}
+              id='menu-appbar'
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -186,17 +189,17 @@ function NavBar(props) {
                 <Link
                   to={setting.route}
                   key={setting.route}
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting.name}</Typography>
+                    <Typography textAlign='center'>{setting.name}</Typography>
                   </MenuItem>
                 </Link>
               ))}
 
-              <MenuItem onClick={ (e) => handleUser(e)}>
-                <Typography textAlign="center">
-                  {player1 ? "Logout" : "Login"}
+              <MenuItem onClick={(e) => handleUser(e)}>
+                <Typography textAlign='center'>
+                  {player1?.Email ? 'Logout' : 'Login'}
                 </Typography>
               </MenuItem>
             </Menu>

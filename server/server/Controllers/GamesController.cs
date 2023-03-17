@@ -23,11 +23,6 @@ namespace server.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
-            
-
-
         }
-
-      
     }
 }

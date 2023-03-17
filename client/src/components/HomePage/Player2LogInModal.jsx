@@ -11,13 +11,14 @@ import {
 } from '@mui/material';
 import { PlayersContext } from '../../context/PlayersContextProvider';
 import axios from 'axios';
+import useUserStore from '../../store/playerStore';
 
 const Player2LogInModal = ({ open, setOpen }) => {
   const [first, setFirst] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { player2Login } = useContext(PlayersContext);
+  const { player2Login } = useUserStore();
 
   const navigate = useNavigate();
 
