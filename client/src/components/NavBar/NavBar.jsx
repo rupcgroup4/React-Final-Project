@@ -15,7 +15,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DarkModeComponent from './DarkModeComponent';
 import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
 import GoogleLogout from '../Google-SignIn/GoogleLogout';
@@ -40,6 +40,9 @@ function NavBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const location = useLocation(); 
+
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -58,6 +61,11 @@ function NavBar(props) {
   const handleUser = (e) => {
     if (player1) {
       player1Logout();
+
+      // hande user log out when they are in thier profile page
+      if (location.pathname.endsWith('/profile')) {
+        navigate('/');
+      }
     } //Logout
     else {
       navigate('/Login');
