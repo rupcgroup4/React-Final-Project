@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 
 export default function UsersTotalGameStats({ wins, totalGames }) {
-  const per = ((wins / totalGames) * 100).toFixed(2);
+  const winPercentage = ((wins / totalGames) * 100);
   return (
     <TableContainer sx={{ width: '44%', mx: '28%', mb: '5px' }}>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -22,7 +22,7 @@ export default function UsersTotalGameStats({ wins, totalGames }) {
               <FontAwesomeIcon icon={faTrophy} color='yellow' />
               Games Won: {wins}
             </TableCell>
-            <TableCell>Win% : {per}%</TableCell>
+            <TableCell>Win% : {winPercentage%1 != 0 ? winPercentage.toFixed(2) : winPercentage}%</TableCell>
           </TableRow>
         </TableHead>
       </Table>
