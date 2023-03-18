@@ -65,7 +65,7 @@ const Profile = () => {
   console.log('player1= ', player1);
 
   const getUserData = useCallback(async () => {
-    const email = player1.Email;
+    const email = player1?.Email;
     const res = await axios
       .post(`${API_URL}games/player`, {
         email,
