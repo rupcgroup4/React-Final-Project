@@ -18,12 +18,11 @@ const usePlayersStore = create(
       player1Logout() {
         set({ player1: null });
       },
-
       updatePlayersRole(player1Role, player2Role) {
-        set({
-          player1: { role: player1Role },
-          player2: { role: player2Role },
-        });
+        set((state) => ({
+          player1: { ...state.player1, role: player1Role },
+          player2: { ...state.player2, role: player2Role },
+        }));
       },
     }),
     {

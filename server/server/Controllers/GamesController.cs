@@ -17,7 +17,7 @@ namespace server.Controllers
         // POST: api/Games
         [HttpPost]
         [Route("api/games")]
-        public IHttpActionResult AddGame([FromBody] Game game)
+        public IHttpActionResult Post([FromBody] Game game)
         {
             try
             {

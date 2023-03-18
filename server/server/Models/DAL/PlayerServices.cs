@@ -49,5 +49,18 @@ namespace server.Models.DAL
             players.Add(player);
             return player;
         }
+
+        public Player PlayerGoogleSignUp(Player player)
+        {
+            foreach (Player p in players)
+            {
+                if (p.Email == player.Email)
+                {
+                    return p;
+                }
+            }
+            players.Add(player);
+            return player;
+        }
     }
 }

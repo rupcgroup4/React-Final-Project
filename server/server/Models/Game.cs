@@ -15,6 +15,8 @@ namespace server.Models
         int steps;
         string winner;
 
+        static GamesServices gs = new GamesServices();
+
 
         public Game() { }
         public Game(string date, string spy, string agents, int steps, string winner)
@@ -35,13 +37,11 @@ namespace server.Models
 
         public Game AddGame()
         {
-            GamesServices gs = new GamesServices();
             return gs.AddGame(this);
         }
 
         public List<Game> GetPlayerGames(string email)
         {
-            GamesServices gs = new GamesServices();
             return gs.GetPlayerGames(email);
         }
         public List<dynamic> GetGlobalLeaderboard()

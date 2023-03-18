@@ -43,9 +43,31 @@ namespace server.Controllers
             
         }
 
+
+        [HttpPost]
+        [Route("api/players/googleSignUp")]
+        public IHttpActionResult GoogleSignUp([FromBody] Player player)
+        {
+            try
+            {
+                player = player.PlayerGoogleSignUp();
+                if (player == null)
+                {
+                    return Content(HttpStatusCode.Unauthorized, "Email already exist");
+                }
+                return Ok(player);
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+
         [HttpPost]
         [Route("api/players/signup")]
-        public IHttpActionResult Post([FromBody] Player player)
+        public IHttpActionResult SignUp([FromBody] Player player)
         {
             try
             {

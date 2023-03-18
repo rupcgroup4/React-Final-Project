@@ -1,9 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import GoogleSignIn from "../components/Google-SignIn/GoogleSignIn";
-
-
+import React from 'react';
+import { Link } from 'react-router-dom';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import GoogleSignIn from '../components/Google-SignIn/GoogleSignIn';
 import {
   Container,
   Avatar,
@@ -12,67 +10,82 @@ import {
   Grid,
   Box,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
+import { API_URL } from '../utils/constants';
+import axios from 'axios';
+import usePlayersStore from '../store/playerStore';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { player1Login } = usePlayersStore();
 
- 
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const email = data.get('email');
+    const password = data.get('password');
+
+    const res = await axios
+      .post(`${API_URL}/players`, {
+        email,
+        password,
+      })
+      .catch((e) => {
+        alert(e.response.data);
+      });
+
+    const user = res.data;
+    player1Login(user);
+    navigate('/');
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component='main' maxWidth='xs'>
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
-            margin="normal"
+            margin='normal'
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id='email'
+            label='Email Address'
+            name='email'
+            autoComplete='email'
             autoFocus
           />
           <TextField
-            margin="normal"
+            margin='normal'
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            name='password'
+            label='Password'
+            type='password'
+            id='password'
+            autoComplete='current-password'
           />
-          <div style={{ margin: "auto" }}>
-            
+          <div style={{ margin: 'auto' }}>
             <GoogleSignIn position={1} />
           </div>
 
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
+            variant='contained'
             sx={{ mt: 3, mb: 2 }}
           >
             Sign In
@@ -81,9 +94,9 @@ const Login = () => {
           <Grid container>
             <Grid item>
               <Link
-                to="/signup"
-                variant="body2"
-                style={{ textDecoration: "none", color: "inherit" }}
+                to='/signup'
+                variant='body2'
+                style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 {"Don't have an account? Sign Up"}
               </Link>
