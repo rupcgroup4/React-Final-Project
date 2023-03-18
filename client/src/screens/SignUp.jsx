@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import usePlayersStore from '../store/playerStore';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../utils/constants';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SignUp = () => {
     const data = new FormData(e.currentTarget);
 
     const res = await axios
-      .post('http://localhost:49269/api/players/signup', {
+      .post(`${API_URL}/players/signup`, {
         FirstName: data.get('firstName'),
         LastName: data.get('lastName'),
         Email: data.get('email'),

@@ -10,6 +10,7 @@ import GameOverModalComponent from '../components/Gameboard/GameOverModalCompone
 import GameDescribe from '../components/Gameboard/GameDescribe';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
 import usePlayersStore from '../store/playerStore';
+import { API_URL } from '../utils/constants';
 
 const init_spy_position = 0;
 const init_agent1_position = 1;
@@ -75,7 +76,7 @@ const Gameboard = () => {
     const spyEmail = 'Email' in player1 ? player1.Email : 'Guest';
     const agentsEmail = 'Email' in player2 ? player2.Email : 'Guest';
 
-    const res = await axios.post('http://localhost:49269/api/games', {
+    const res = await axios.post(`${API_URL}/api/games`, {
       Date: new Date().toLocaleDateString(),
       Spy: spyEmail,
       Agents: agentsEmail,

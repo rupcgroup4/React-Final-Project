@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,16 +8,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@mui/material";
-import { PlayersContext } from "../../context/PlayersContextProvider";
-import axios from "axios";
-import usePlayersStore from "../../store/playerStore";
-import GoogleSignIn from "../Google-SignIn/GoogleSignIn";
+} from '@mui/material';
+import { PlayersContext } from '../../context/PlayersContextProvider';
+import axios from 'axios';
+import usePlayersStore from '../../store/playerStore';
+import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
+import { API_URL } from '../../utils/constants';
 
 const Player2LogInModal = ({ open, setOpen }) => {
   const [first, setFirst] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const { player2Login } = usePlayersStore();
 
@@ -35,7 +36,7 @@ const Player2LogInModal = ({ open, setOpen }) => {
     e.preventDefault();
 
     const res = await axios
-      .post("http://localhost:49269/api/players", {
+      .post(`${API_URL}/players`, {
         email,
         password,
       })
@@ -50,7 +51,7 @@ const Player2LogInModal = ({ open, setOpen }) => {
 
   useEffect(() => {
     if (!open && !first) {
-      navigate("/gameboard");
+      navigate('/gameboard');
     } else {
       setFirst(false);
     }
@@ -63,37 +64,37 @@ const Player2LogInModal = ({ open, setOpen }) => {
       <Dialog open={open}>
         <DialogTitle>Player 2 - Guest. Do you want to login?</DialogTitle>
         <DialogContent>
-          <Box component={"form"} onSubmit={login}>
+          <Box component={'form'} onSubmit={login}>
             <TextField
               autoFocus
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
+              margin='dense'
+              id='email'
+              label='Email Address'
+              type='email'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <TextField
               autoFocus
-              margin="dense"
-              id="password"
-              label="Password"
-              type="password"
+              margin='dense'
+              id='password'
+              label='Password'
+              type='password'
               fullWidth
-              variant="standard"
+              variant='standard'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <Box>
-              <GoogleSignIn position={2} handleClose={handleClose}/>
+              <GoogleSignIn position={2} handleClose={handleClose} />
             </Box>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Login</Button>
+              <Button type='submit'>Login</Button>
             </DialogActions>
           </Box>
         </DialogContent>

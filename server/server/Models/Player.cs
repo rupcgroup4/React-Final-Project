@@ -39,5 +39,11 @@ namespace server.Models
             PlayerServices ps = new PlayerServices();
             return ps.PlayerSignUp(this);
         }
+
+        public Player PlayerGoogleSignUp()
+        {
+            PlayerServices ps = new PlayerServices();
+            return ps.PlayerGoogleSignUp(this);
+        }
     }
 }

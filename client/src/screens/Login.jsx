@@ -28,7 +28,7 @@ const Login = () => {
     const password = data.get('password');
 
     const res = await axios
-      .post(`${API_URL}players`, {
+      .post(`${API_URL}/players`, {
         email,
         password,
       })
