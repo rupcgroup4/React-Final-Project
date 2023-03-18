@@ -18,9 +18,8 @@ export default function LeaderBoard() {
         type,
       })
       .catch((e) => {
-        alert(e.response);
+        alert(e.message);
       });
-      console.log(res?.data);
       setLeaderBoard(res?.data)
   };
 
