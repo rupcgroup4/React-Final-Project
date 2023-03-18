@@ -68,12 +68,15 @@ const HomePage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4} >
-          <Box mb={10} style={{flexDirection:'row'}}>
+        <Grid item xs={4}>
+          <Box mb={20} style={{ flexDirection: "row" }}>
             <Spy_Agent_Cards />
           </Box>
 
-          <Box ml={5} >
+          <Box
+            ml={3}
+            style={{ position: "absolute", bottom: "17%", width: "30%" }}
+          >
             <ChoosePlayerModal
               open={isChoosePlayerModal}
               setOpen={setIsChoosePlayerModal}
