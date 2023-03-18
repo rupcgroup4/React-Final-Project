@@ -1,150 +1,28 @@
 import React, { useState, useEffect } from "react";
 import TabsComponent from "../components/Leaderboard/TabsComponent";
-const data = [
-  {
-    Rank: 1,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 2,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-  {
-    Rank: 3,
-    PlayerName: "Moshe",
-    TotalGames: 1231,
-    WinRate: 98,
-    TotalSteps: 483242,
-  },
-];
+import axios from "axios";
+import { API_URL } from '../utils/constants';
+
 
 export default function LeaderBoard() {
-  const [leaderBoard, setLeaderBoard] = useState(data);
+  const [leaderBoard, setLeaderBoard] = useState();
   const [type, setType] = useState("Global");
 
   useEffect(() => {
-    if (type === "Global") setLeaderBoard(data);
-    if (type === "Spy") setLeaderBoard(data);
-    if (type === "Agent") setLeaderBoard(data);
+    getLeaderboard(type);
   }, [type]);
+
+  const getLeaderboard = async (type) => {
+    const res = await axios
+      .post(`${API_URL}games/leaderboard`, {
+        type,
+      })
+      .catch((e) => {
+        alert(e.response);
+      });
+      console.log(res?.data);
+      setLeaderBoard(res?.data)
+  };
 
   return (
     <div>

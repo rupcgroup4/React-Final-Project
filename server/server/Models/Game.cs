@@ -44,5 +44,21 @@ namespace server.Models
             GamesServices gs = new GamesServices();
             return gs.GetPlayerGames(email);
         }
+        public List<dynamic> GetGlobalLeaderboard()
+        {
+            GamesServices gs = new GamesServices();
+            return gs.GetGlobalLeaderboard();
+        }
+        public List<dynamic> GetSpyLeaderboard()
+        {
+            GamesServices gs = new GamesServices();
+            return gs.GetSpyLeaderboard();
+        }
+        public List<dynamic> GetAgentsLeaderboard()
+        {
+            GamesServices gs = new GamesServices();
+            return gs.GetAgentsLeaderboard();
+        }
+        
     }
 }

@@ -8,13 +8,10 @@ import TableComponent from "./TableComponent";
 export default function TabsComponent(props) {
   const [value, setValue] = React.useState("Global");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    //set type ? global/spy/agent
+
+  const handleChange = (event, newValue) => {
     props.setType(newValue)
-
     setValue(newValue);
-  
-
   };
 
   return (
@@ -42,7 +39,7 @@ export default function TabsComponent(props) {
           <TabList onChange={handleChange}>
             <Tab label="Global" value="Global" />
             <Tab label="Spy" value="Spy" />
-            <Tab label="Agent" value="Agent" />
+            <Tab label="Agents" value="Agents" />
           </TabList>
         </Box>
         <TabPanel value="Global">
@@ -51,7 +48,7 @@ export default function TabsComponent(props) {
         <TabPanel value="Spy">
           <TableComponent leaderBoard={props.leaderBoard}/>
         </TabPanel>
-        <TabPanel value="Agent">
+        <TabPanel value="Agents">
           <TableComponent leaderBoard={props.leaderBoard}/>
         </TabPanel>
       </TabContext>

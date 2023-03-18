@@ -1,66 +1,15 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Paper,Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow }  from "@mui/material";
 
-
-interface Column {
-  id: "rank" | "playerName" | "totalGames" | "winRate" | "totalSteps";
-  label: string;
-  minWidth?: number;
-  align?: "center";
-  format?: (value: number) => string;
-}
-
-const columns: Column[] = [
-  {
-    id: "rank",
-    label: "Rank",
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "playerName",
-    label: "Player Name",
-    align: "center",
-  },
-  {
-    id: "totalGames",
-    label: "Total Games",
-
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "winRate",
-    label: "Win %",
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US")  + "%",
-  },
-  {
-    id: "totalSteps",
-    label: "Total Steps",
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-];
-
-interface Data {
-  rank: number;
-  playerName: string;
-  totalGames: number;
-  winRate: number;
-  density: number;
-}
-
 function createData(
-  rank: number,
-  playerName: string,
-  totalGames: number,
-  winRate: number,
-  totalSteps: number
-): Data {
+  rank,
+  playerName,
+  totalGames,
+  winRate,
+  totalSteps,
+) {
   return { rank, playerName, totalGames, winRate, totalSteps };
 }
-
 export default function TableComponent(props) {
 
   let rows = []
@@ -74,20 +23,19 @@ export default function TableComponent(props) {
         props.leaderBoard[i].TotalSteps))
       
     }
+    console.log(rows);
   }
 
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(e.target.value);
     setPage(0);
   };
 
@@ -95,40 +43,47 @@ export default function TableComponent(props) {
     <Paper sx={{ width: "60%", overflow: "hidden", margin: "auto" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+        <TableHead>
+          <TableRow>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
+              Rank
+            </TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
+              Player Name
+            </TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
+              Total Games
+            </TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
+              Win %
+            </TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
+              Total Steps
+            </TableCell>
+          </TableRow>
+        </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row,index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column, index) => {
-                      const value = row[column.id];
-                      
-                      return (
-                        <TableCell key={index} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                    
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+          {rows.map((row, idx) => (
+            <TableRow
+              key={idx}
+            >
+              <TableCell align='center'>
+                {row.rank}
+              </TableCell>
+              <TableCell align='center'>
+                {row.playerName}
+              </TableCell>
+              <TableCell align='center'>
+                {row.totalGames}
+              </TableCell>
+              <TableCell align='center'>
+                {row.winRate}
+              </TableCell>
+              <TableCell align='center'>
+                {row.totalSteps}
+              </TableCell>
+            </TableRow>
+          ))}
           </TableBody>
         </Table>
       </TableContainer>
