@@ -44,7 +44,7 @@ const ChoosePlayerModal = ({ open, setOpen, setIsPlayer2LoginModal }) => {
         fullWidth={true}
         endIcon={<FlightIcon />}
         onClick={handleClickOpen}
-        style={{height:"5rem"}}
+        style={{ height:"4rem"}}
       >
         <Typography variant="h6" >Play Game</Typography>
       </Button>

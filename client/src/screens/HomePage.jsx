@@ -51,7 +51,7 @@ const HomePage = () => {
       <Divider />
       <Grid
         container
-        spacing={5}
+        spacing={1}
         display={"flex"}
         alignItems={"center"}
         justifyContent={"center"}
@@ -68,15 +68,12 @@ const HomePage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4}>
-          <Box mb={20} style={{ flexDirection: "row" }}>
+        <Grid item xs={6}>
+          <Box >
             <Spy_Agent_Cards />
           </Box>
 
-          <Box
-            ml={3}
-            style={{ position: "absolute", bottom: "17%", width: "30%" }}
-          >
+          <Box style={{ width: '65vh', margin: '0 auto'}}>
             <ChoosePlayerModal
               open={isChoosePlayerModal}
               setOpen={setIsChoosePlayerModal}
