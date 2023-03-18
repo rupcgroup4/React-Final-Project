@@ -9,6 +9,7 @@ export const GoogleLogout = () => {
   const { player1 } = usePlayersStore();
 
   const generator = new AvatarGenerator();
+  const [avatar, setAvatar] = useState(generator.generateRandomAvatar());
 
   useEffect(() => {
     if (player1 === null) {
@@ -18,11 +19,11 @@ export const GoogleLogout = () => {
 
   return player1 ? (
     <div>
-      <Avatar src={player1.Picture ? player1.Picture : generator.generateRandomAvatar()} />
+      <Avatar src={avatar} />
     </div>
   ) : (
     <div>
-      <Avatar src='/static/images/avatar/2.jpg'/>
+      <Avatar src='/static/images/avatar/2.jpg' />
     </div>
   );
 };

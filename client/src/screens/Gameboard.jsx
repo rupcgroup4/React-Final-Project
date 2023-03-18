@@ -5,12 +5,13 @@ import Flights from '../components/Gameboard/Flights';
 import { graph } from '../file';
 import Map from '../classes/Map';
 import axios from 'axios';
-import { Box, Grid } from '@mui/material';
+import { Box, Divider, Grid } from '@mui/material';
 import GameOverModalComponent from '../components/Gameboard/GameOverModalComponent';
 import GameDescribe from '../components/Gameboard/GameDescribe';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
 import usePlayersStore from '../store/playerStore';
 import { API_URL } from '../utils/constants';
+import GameAlert from '../components/Gameboard/GameAlert';
 
 const init_spy_position = 0;
 const init_agent1_position = 1;
@@ -76,7 +77,7 @@ const Gameboard = () => {
     const spyEmail = 'Email' in player1 ? player1.Email : 'Guest';
     const agentsEmail = 'Email' in player2 ? player2.Email : 'Guest';
 
-    const res = await axios.post(`${API_URL}/api/games`, {
+    const res = await axios.post(`${API_URL}/games`, {
       Date: new Date().toLocaleDateString(),
       Spy: spyEmail,
       Agents: agentsEmail,
@@ -115,6 +116,7 @@ const Gameboard = () => {
     map.setPlane(`${spy.id} ${location}`);
     setTurn('agent 1');
     setSteps((prev) => prev + 1);
+    checkWin();
   };
 
   const agentMove = (location, agentNum) => {
@@ -130,6 +132,7 @@ const Gameboard = () => {
       setTurn('spy');
     }
     setSteps((prev) => prev + 1);
+    checkWin();
   };
 
   const setWinnerEmail = useCallback(
@@ -156,6 +159,9 @@ const Gameboard = () => {
     if (isSpyWin || isAgentsWin) {
       setTurn('');
     }
+    setTimeout(() => {
+      setGameDescribeMessage('');
+    }, 2000);
   }, [agents, setWinnerEmail, spy?.id, targetPosition]);
 
   const resetGame = () => {
@@ -178,14 +184,14 @@ const Gameboard = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <GameDescribe
-        resetGame={resetGame}
-        message={gameDescribeMessage}
-        steps={steps}
-        turn={turn}
-      />
-      <Grid container spacing={0.5} mt={5}>
-        <Grid item xs={3}>
+      <Box></Box>
+
+      <Grid container spacing={0.5}>
+        <Grid item xs={12} display={'flex'} justifyContent={'center'}>
+          <GameDescribe resetGame={resetGame} steps={steps} turn={turn} />
+        </Grid>
+
+        <Grid item md={3}>
           <Flights
             state={spy}
             isSpy={true}
@@ -195,18 +201,20 @@ const Gameboard = () => {
             agentMove={agentMove}
           />
         </Grid>
-        <Grid
-          item
-          xs={6}
-          sx={{
-            border: 1,
-            boxShadow: 3,
-            maxHeight: '91vh',
-          }}
-        >
-          <GameMap map={map} graph={graph} />
+        <Grid item md={6}>
+          <Box
+            sx={{
+              border: 1,
+              boxShadow: 3,
+              maxHeight: '91vh',
+              borderRadius: '16px',
+            }}
+          >
+            <GameMap map={map} graph={graph} />
+          </Box>
+          <GameAlert message={gameDescribeMessage} />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item md={3}>
           <ToggleAgents isAgent1Show={isAgent1Show} changeAgent={changeAgent} />
           {isAgent1Show ? (
             <Flights

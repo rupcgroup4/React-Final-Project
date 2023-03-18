@@ -56,7 +56,7 @@ const Flights = ({
     }
   };
 
-  //this useEffect used to updated the fligts when the currentId is change (selected airPort)
+  //this useEffect used to updated the fligts when the currentId is changed (selected airPort)
   useEffect(() => {
     const flights = graph[state?.id]?.destinations;
     setFlights(flights);
@@ -74,7 +74,11 @@ const Flights = ({
     >
       <Box
         pl={2}
-        sx={{ bgcolor: state?.color, borderRadius: '16px' }}
+        sx={{
+          bgcolor: state?.color,
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
+        }}
         color={'white'}
       >
         <Typography
