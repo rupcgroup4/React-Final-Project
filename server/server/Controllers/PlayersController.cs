@@ -42,7 +42,27 @@ namespace server.Controllers
             }
             
         }
-        
+
+        [HttpPost]
+        [Route("api/players/signup")]
+        public IHttpActionResult Post([FromBody] Player player)
+        {
+            try
+            {
+                player = player.PlayerSingUp();
+                if(player == null)
+                {
+                    return Content(HttpStatusCode.Unauthorized, "Email already exist");
+                }
+                return Ok(player);
+            } catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
+            }
+            
+        }
+
+
 
     }
 }

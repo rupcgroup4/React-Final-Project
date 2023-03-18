@@ -36,5 +36,18 @@ namespace server.Models.DAL
 
             return null;
         }
+
+        public Player PlayerSignUp(Player player)
+        {
+            foreach(Player p in players)
+            {
+                if(p.Email == player.Email)
+                {
+                    return null;
+                }
+            }
+            players.Add(player);
+            return player;
+        }
     }
 }

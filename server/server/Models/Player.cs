@@ -30,8 +30,14 @@ namespace server.Models
 
         public Player PlayerLogin(string email, string password)
         {
-            PlayerServices us = new PlayerServices();
-            return us.PlayerLogin(email, password);
+            PlayerServices ps = new PlayerServices();
+            return ps.PlayerLogin(email, password);
+        }
+
+        public Player PlayerSingUp()
+        {
+            PlayerServices ps = new PlayerServices();
+            return ps.PlayerSignUp(this);
         }
     }
 }

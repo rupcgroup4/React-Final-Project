@@ -9,15 +9,31 @@ import {
   Box,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
+import usePlayersStore from '../store/playerStore';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const navigate = useNavigate();
+  const { player1Login } = usePlayersStore();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+
+    const res = await axios
+      .post('http://localhost:49269/api/players/signup', {
+        FirstName: data.get('firstName'),
+        LastName: data.get('lastName'),
+        Email: data.get('email'),
+        Password: data.get('password'),
+      })
+      .catch((e) => {
+        alert(e.response.data);
+      });
+
+    player1Login(res.data);
+    navigate('/');
   };
 
   return (
@@ -94,7 +110,7 @@ const SignUp = () => {
               <Link
                 to='/login'
                 variant='body2'
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: 'none' }}
               >
                 Already have an account? Sign in
               </Link>
