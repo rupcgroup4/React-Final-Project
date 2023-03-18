@@ -14,13 +14,13 @@ export default function LeaderBoard() {
 
   const getLeaderboard = async (type) => {
     const res = await axios
-      .post(`${API_URL}games/leaderboard`, {
-        type,
-      })
-      .catch((e) => {
-        alert(e.message);
-      });
-      setLeaderBoard(res?.data)
+    .post(`${API_URL}/games/leaderboard`, {
+      type,
+    })
+    .catch((e) => {
+      alert(e);
+    });
+    setLeaderBoard(res?.data)
   };
 
   return (
