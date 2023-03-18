@@ -186,6 +186,8 @@ function NavBar(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
+
+                (setting.name=='Profile' && player1)?(
                 <Link
                   to={setting.route}
                   key={setting.route}
@@ -195,6 +197,7 @@ function NavBar(props) {
                     <Typography textAlign='center'>{setting.name}</Typography>
                   </MenuItem>
                 </Link>
+                ):""
               ))}
 
               <MenuItem onClick={(e) => handleUser(e)}>
