@@ -7,7 +7,8 @@ using server.Models.DAL;
 namespace server.Models
 {
     public class Game
-    {
+    {   
+        int id;
         string date;
         string spy;
         string agents;
@@ -30,11 +31,18 @@ namespace server.Models
         public string Agents { get => agents; set => agents = value; }
         public int Steps { get => steps; set => steps = value; }
         public string Winner { get => winner; set => winner = value; }
+        public int Id { get => id; set => id = value; }
 
         public Game AddGame()
         {
             GamesServices gs = new GamesServices();
             return gs.AddGame(this);
+        }
+
+        public List<Game> GetPlayerGames(string email)
+        {
+            GamesServices gs = new GamesServices();
+            return gs.GetPlayerGames(email);
         }
     }
 }
