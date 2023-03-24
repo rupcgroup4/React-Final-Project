@@ -3,7 +3,7 @@ import { Box, Grid, Typography, Card, CardContent } from '@mui/material';
 import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
 import MapAnimation from '../components/HomePage/MapAnimation';
 import Player2LoginModal from '../components/HomePage/Player2LogInModal';
-import Spy_Agent_Cards from '../components/HomePage/Spy_Agent_Cards';
+import SpyAgentCards from '../components/HomePage/SpyAgentCards';
 import Header from '../components/Header';
 
 const HomePage = () => {
@@ -51,7 +51,7 @@ const HomePage = () => {
         </Grid>
         <Grid item xs={6}>
           <Header header={'Catch Me If You Can!'} />
-          <Spy_Agent_Cards />
+          <SpyAgentCards />
           <Box style={{ width: '50vh', margin: '0 auto' }}>
             <ChoosePlayerModal
               open={isChoosePlayerModal}
