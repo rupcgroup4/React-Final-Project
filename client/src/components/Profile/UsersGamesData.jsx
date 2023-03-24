@@ -24,7 +24,7 @@ export default function BasicTable({ gameData }) {
     for (let i = 0; i < gameData.length; i++) {
       rows.push(
         createData(
-          gameData[i].gameId,
+          i+1,
           gameData[i].date,
           gameData[i].playAs,
           gameData[i].opponent,
@@ -40,20 +40,20 @@ export default function BasicTable({ gameData }) {
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'Bold' }}>Game</TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'Bold' }}>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>Game</TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
               Date
             </TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'Bold' }}>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
               Play As
             </TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'Bold' }}>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
               Opponent
             </TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'Bold' }}>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
               Win
             </TableCell>
-            <TableCell align='right' sx={{ fontWeight: 'Bold' }}>
+            <TableCell align='center' sx={{ fontWeight: 'Bold' }}>
               Total Steps
             </TableCell>
           </TableRow>
@@ -64,16 +64,16 @@ export default function BasicTable({ gameData }) {
               key={idx}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component='th' scope='row'>
+              <TableCell align='center' component='th' scope='row'>
                 {row.gameId}
               </TableCell>
-              <TableCell align='right'>{row.date}</TableCell>
-              <TableCell align='right'>
+              <TableCell align='center'>{row.date}</TableCell>
+              <TableCell align='center'>
                 {row.playAs ? 'Spy' : 'Agents'}
               </TableCell>
-              <TableCell align='right'>{row.opponent}</TableCell>
-              <TableCell align='right'>{row.win ? 'Yes' : 'No'}</TableCell>
-              <TableCell align='right'>{row.totalSteps}</TableCell>
+              <TableCell align='center'>{row.opponent}</TableCell>
+              <TableCell align='center'>{row.win ? 'Yes' : 'No'}</TableCell>
+              <TableCell align='center'>{row.totalSteps}</TableCell>
             </TableRow>
           ))}
         </TableBody>

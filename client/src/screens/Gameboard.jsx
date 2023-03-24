@@ -79,8 +79,12 @@ const Gameboard = () => {
   };
 
   const saveGameStats = useCallback(async () => {
-    const spyEmail = 'Email' in player1 ? player1.Email : 'Guest';
-    const agentsEmail = 'Email' in player2 ? player2.Email : 'Guest';
+    const spyEmail = 'Email' in player1 ? player1?.Email : null;
+    const agentsEmail = 'Email' in player2 ? player2.Email : null;
+
+    // if (spyEmail === null && agentsEmail === null) { 
+    //   return;
+    // }
 
     const res = await axios.post(`${API_URL}/games`, {
       Date: new Date().toLocaleDateString(),
@@ -144,15 +148,28 @@ const Gameboard = () => {
     (winRole) => {
       const isPlayer1Win = player1.role === winRole;
       const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
-      setWinner(winnerEmail);
-      setRoleWin(winRole);
+      if (winnerEmail) { 
+        setWinner(winnerEmail);
+        setRoleWin(winRole);
+      }
+      else { 
+        setWinner("Guest");
+        setRoleWin(winRole);
+      }
     },
     [player1?.Email, player1?.role, player2?.Email]
   );
 
   const checkWin = useCallback(async () => {
+
+    
     const isSpyWin = spy?.id === targetPosition;
     const isAgentsWin = agents.some((agent) => agent?.id === spy?.id);
+
+    console.log(isSpyWin,"Spy");
+    console.log(isAgentsWin,"Agent");
+
+
     if (isAgentsWin) {
       await sleep(1000);
       setIsGameOver(true);
