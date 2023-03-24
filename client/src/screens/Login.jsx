@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleSignIn from '../components/Google-SignIn/GoogleSignIn';
@@ -10,6 +10,7 @@ import {
   Grid,
   Box,
   Typography,
+  Alert,
 } from '@mui/material';
 import { API_URL } from '../utils/constants';
 import axios from 'axios';
@@ -19,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const navigate = useNavigate();
   const { player1Login } = usePlayersStore();
+  const [alert, setAlert] = useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,12 +35,19 @@ const Login = () => {
         password,
       })
       .catch((e) => {
-        alert(e.response.data);
+        createAlert(e.response.data);
       });
 
     const user = res.data;
     player1Login(user);
     navigate('/');
+  };
+
+  const createAlert = (alert) => {
+    setAlert(alert);
+    setTimeout(() => {
+      setAlert();
+    }, 1500);
   };
 
   return (
@@ -78,9 +87,14 @@ const Login = () => {
             id='password'
             autoComplete='current-password'
           />
-          <div style={{ margin: 'auto' }}>
+          <Box m={'auto'}>
             <GoogleSignIn position={1} />
-          </div>
+          </Box>
+          {alert && (
+            <Box mt={3}>
+              <Alert severity='error'>{alert}</Alert>
+            </Box>
+          )}
 
           <Button
             type='submit'

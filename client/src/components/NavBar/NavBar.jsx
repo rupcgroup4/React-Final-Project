@@ -34,14 +34,13 @@ const settings = [
 ];
 
 function NavBar(props) {
-  const { player1, player1Logout } = usePlayersStore();
+  const { player1, player1Logout, player2, player2Logout } = usePlayersStore();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const location = useLocation(); 
-
+  const location = useLocation();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -71,6 +70,13 @@ function NavBar(props) {
       navigate('/Login');
     }
   };
+
+  // useEffect(() => {
+  //   const isGameBoard = location.pathname.endsWith('/gameboard');
+  //   if (player2 && !isGameBoard) {
+  //     player2Logout();
+  //   }
+  // }, [location, player2, player2Logout]);
   return (
     <AppBar position='static'>
       <Container maxWidth='xl'>
@@ -193,20 +199,21 @@ function NavBar(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-
-                (setting.name=='Profile' && player1)?(
-                <Link
-                  to={setting.route}
-                  key={setting.route}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>{setting.name}</Typography>
-                  </MenuItem>
-                </Link>
-                ):""
-              ))}
+              {settings.map((setting) =>
+                setting.name == 'Profile' && player1 ? (
+                  <Link
+                    to={setting.route}
+                    key={setting.route}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography textAlign='center'>{setting.name}</Typography>
+                    </MenuItem>
+                  </Link>
+                ) : (
+                  ''
+                )
+              )}
 
               <MenuItem onClick={(e) => handleUser(e)}>
                 <Typography textAlign='center'>

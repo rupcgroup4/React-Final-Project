@@ -6,12 +6,13 @@ import { graph } from '../file';
 import Map from '../classes/Map';
 import axios from 'axios';
 import { Box, Divider, Grid } from '@mui/material';
-import GameOverModalComponent from '../components/Gameboard/GameOverModalComponent';
+import GameOverModalComponent from '../components/Gameboard/GameOverModal';
 import GameDescribe from '../components/Gameboard/GameDescribe';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
 import usePlayersStore from '../store/playerStore';
 import { API_URL } from '../utils/constants';
 import GameAlert from '../components/Gameboard/GameAlert';
+import GameOverModal from '../components/Gameboard/GameOverModal';
 
 const init_spy_position = 0;
 const init_agent1_position = 1;
@@ -38,7 +39,7 @@ const Gameboard = () => {
   const [turn, setTurn] = useState(null);
   const [steps, setSteps] = useState(null);
 
-  const { player1, player2 } = usePlayersStore();
+  const { player1, player2, player2Logout } = usePlayersStore();
 
   //Hold map class object
   const [map, setMap] = useState(null);
@@ -56,6 +57,10 @@ const Gameboard = () => {
   const [gameDescribeMessage, setGameDescribeMessage] = useState('');
   //
   const [winner, setWinner] = useState(null);
+  //
+  const [isGameOver, setIsGameOver] = useState(false);
+  //
+  const [roleWin, setRoleWin] = useState('');
 
   const changeAgent = () => {
     setIsAgent1Show(isAgent1Show ? false : true);
@@ -140,6 +145,7 @@ const Gameboard = () => {
       const isPlayer1Win = player1.role === winRole;
       const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
       setWinner(winnerEmail);
+      setRoleWin(winRole);
     },
     [player1?.Email, player1?.role, player2?.Email]
   );
@@ -149,11 +155,11 @@ const Gameboard = () => {
     const isAgentsWin = agents.some((agent) => agent?.id === spy?.id);
     if (isAgentsWin) {
       await sleep(1000);
-      alert('agents win');
+      setIsGameOver(true);
       setWinnerEmail('agents');
     } else if (isSpyWin) {
       await sleep(1000);
-      alert('spy win');
+      setIsGameOver(true);
       setWinnerEmail('spy');
     }
     if (isSpyWin || isAgentsWin) {
@@ -181,6 +187,12 @@ const Gameboard = () => {
       saveGameStats();
     }
   }, [saveGameStats, winner]);
+
+  useEffect(() => {
+    return () => {
+      player2Logout();
+    };
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -243,6 +255,11 @@ const Gameboard = () => {
           )}
         </Grid>
       </Grid>
+      <GameOverModal
+        open={isGameOver}
+        setOpen={setIsGameOver}
+        roleWin={roleWin}
+      />
     </Box>
   );
 };

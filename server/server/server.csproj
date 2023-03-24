@@ -220,6 +220,7 @@
     </Compile>
     <Compile Include="Models\DAL\GamesServices.cs" />
     <Compile Include="Models\DAL\PlayerServices.cs" />
+    <Compile Include="Models\DAL\SqlConnection.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
