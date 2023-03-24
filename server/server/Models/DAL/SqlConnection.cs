@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 
-namespace RupBNB.Models.DAL
+namespace server.Models.DAL
 {
     public static class SqlConnect
     {
