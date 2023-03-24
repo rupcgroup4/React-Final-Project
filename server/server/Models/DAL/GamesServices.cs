@@ -4,38 +4,15 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 
 namespace server.Models.DAL
 {
     public class GamesServices
     {
 
-        List<dynamic> global_Leaderboard;
-        List<dynamic> spy_Leaderboard;
-        List<dynamic> agents_Leaderboard;
-
         public GamesServices()
         {
-
-
-            global_Leaderboard = new List<dynamic>();
-
-            global_Leaderboard.Add(new { Rank = "1", PlayerName = "Moshe", TotalGames = "1992", WinRate = "78.33", TotalSteps = "23921" });
-            global_Leaderboard.Add(new { Rank = "2", PlayerName = "Moshe", TotalGames = "2131", WinRate = "78.33", TotalSteps = "23921" });
-            global_Leaderboard.Add(new { Rank = "3", PlayerName = "Moshe", TotalGames = "1912392", WinRate = "78.33", TotalSteps = "23921" });
-
-            spy_Leaderboard = new List<dynamic>();
-
-            spy_Leaderboard.Add(new { Rank = "1", PlayerName = "Stav", TotalGames = "1992", WinRate = "78.33", TotalSteps = "23921" });
-            spy_Leaderboard.Add(new { Rank = "2", PlayerName = "Stav", TotalGames = "2131", WinRate = "78.33", TotalSteps = "23921" });
-            spy_Leaderboard.Add(new { Rank = "3", PlayerName = "Stav", TotalGames = "1912392", WinRate = "78.33", TotalSteps = "23921" });
-
-            agents_Leaderboard = new List<dynamic>();
-
-            agents_Leaderboard.Add(new { Rank = "1", PlayerName = "Yoav", TotalGames = "1992", WinRate = "78.33", TotalSteps = "23921" });
-            agents_Leaderboard.Add(new { Rank = "2", PlayerName = "Yoav", TotalGames = "2131", WinRate = "78.33", TotalSteps = "23921" });
-            agents_Leaderboard.Add(new { Rank = "3", PlayerName = "Yoav", TotalGames = "1912392", WinRate = "78.33", TotalSteps = "23921" });
-
 
         }
 
@@ -140,22 +117,115 @@ namespace server.Models.DAL
         public List<dynamic> GetGlobalLeaderboard()
         {
 
+            SqlConnection con = SqlConnect.Connect();
+
+            SqlCommand command = CreateGetGlobalLeaderboard(con);
+
+            SqlDataReader dr = command.ExecuteReader();
+
+            List<dynamic> global_Leaderboard = new List<dynamic>();
+            while (dr.Read())
+            {
+                int rank = Convert.ToInt32(dr["Rank"]);
+                string email = dr["email"].ToString();
+                float totalGames = Convert.ToInt32(dr["totalGames"]);
+                int totalSteps = Convert.ToInt32(dr["totalSteps"]);
+                float totalWin = Convert.ToInt32(dr["totalWin"]);
+                float winrate = (totalWin / totalGames) * 100;
+
+                global_Leaderboard.Add(new { Rank = rank, PlayerName = email, TotalGames = totalGames, WinRate = winrate.ToString("F") + '%', TotalSteps = totalSteps });
+            }
+
+            con.Close();
+
             return global_Leaderboard;
+        }
+        private SqlCommand CreateGetGlobalLeaderboard(SqlConnection con)
+        {
+            SqlCommand command = new SqlCommand();
+
+            command.CommandText = "SP_GetGlobalLeaderboard";
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
+
+            return command;
         }
         public List<dynamic> GetSpyLeaderboard()
         {
 
 
+            SqlConnection con = SqlConnect.Connect();
+
+            SqlCommand command = CreateGetSpyLeaderboard(con);
+
+            SqlDataReader dr = command.ExecuteReader();
+
+            List<dynamic> spy_Leaderboard = new List<dynamic>();
+            while (dr.Read())
+            {
+                int rank = Convert.ToInt32(dr["Rank"]);
+                string email = dr["email"].ToString();
+                float totalGames = Convert.ToInt32(dr["totalGames"]);
+                int totalSteps = Convert.ToInt32(dr["totalSteps"]);
+                float totalWin = Convert.ToInt32(dr["totalWin"]);
+                float winrate = (totalWin / totalGames) * 100;
+
+                spy_Leaderboard.Add(new { Rank = rank, PlayerName = email, TotalGames = totalGames, WinRate = winrate.ToString("F") + '%', TotalSteps = totalSteps });
+            }
+
+            con.Close();
+
             return spy_Leaderboard;
+        }
+        private SqlCommand CreateGetSpyLeaderboard(SqlConnection con)
+        {
+            SqlCommand command = new SqlCommand();
+
+            command.CommandText = "SP_GetSpyLeaderboard";
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
+
+            return command;
         }
         public List<dynamic> GetAgentsLeaderboard()
         {
 
+            SqlConnection con = SqlConnect.Connect();
+
+            SqlCommand command = CreateGetAgentsLeaderboard(con);
+
+            SqlDataReader dr = command.ExecuteReader();
+
+            List<dynamic> agents_Leaderboard = new List<dynamic>();
+            while (dr.Read())
+            {
+                int rank = Convert.ToInt32(dr["Rank"]);
+                string email = dr["email"].ToString();
+                float totalGames = Convert.ToInt32(dr["totalGames"]);
+                int totalSteps = Convert.ToInt32(dr["totalSteps"]);
+                float totalWin = Convert.ToInt32(dr["totalWin"]);
+                float winrate = (totalWin / totalGames) * 100;
+
+                agents_Leaderboard.Add(new { Rank = rank, PlayerName = email, TotalGames = totalGames, WinRate = winrate.ToString("F") + '%', TotalSteps = totalSteps });
+            }
+
+            con.Close();
+
             return agents_Leaderboard;
         }
+        private SqlCommand CreateGetAgentsLeaderboard(SqlConnection con)
+        {
+            SqlCommand command = new SqlCommand();
 
-        
+            command.CommandText = "SP_GetAgentsLeaderboard";
+            command.Connection = con;
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandTimeout = 10; // in seconds
 
+            return command;
+        }
 
 
     }
