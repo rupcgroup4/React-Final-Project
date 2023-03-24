@@ -4,6 +4,7 @@ import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
 import MapAnimation from '../components/HomePage/MapAnimation';
 import Player2LoginModal from '../components/HomePage/Player2LogInModal';
 import Spy_Agent_Cards from '../components/HomePage/Spy_Agent_Cards';
+import Header from '../components/Header';
 
 const HomePage = () => {
   // determine if ChoosePlayerModal is open or not
@@ -49,15 +50,7 @@ const HomePage = () => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Typography
-            variant='h2'
-            textAlign={'center'}
-            style={{
-              fontFamily: '"Caveat", "cursive"',
-            }}
-          >
-            Catch Me If You Can!
-          </Typography>
+          <Header header={'Catch Me If You Can!'} />
           <Spy_Agent_Cards />
           <Box style={{ width: '50vh', margin: '0 auto' }}>
             <ChoosePlayerModal
