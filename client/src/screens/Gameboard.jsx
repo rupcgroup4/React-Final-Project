@@ -205,11 +205,12 @@ const Gameboard = () => {
     }
   }, [saveGameStats, winner]);
 
+  //Logout Player 2 when leaving gameboard
   useEffect(() => {
     return () => {
       player2Logout();
     };
-  }, []);
+  }, [player2Logout]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

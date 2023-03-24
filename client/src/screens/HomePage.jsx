@@ -3,7 +3,8 @@ import { Box, Grid, Typography, Card, CardContent } from '@mui/material';
 import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
 import MapAnimation from '../components/HomePage/MapAnimation';
 import Player2LoginModal from '../components/HomePage/Player2LogInModal';
-import Spy_Agent_Cards from '../components/HomePage/Spy_Agent_Cards';
+import SpyAgentCards from '../components/HomePage/SpyAgentCards';
+import Header from '../components/Header';
 
 const HomePage = () => {
   // determine if ChoosePlayerModal is open or not
@@ -49,16 +50,8 @@ const HomePage = () => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Typography
-            variant='h2'
-            textAlign={'center'}
-            style={{
-              fontFamily: '"Caveat", "cursive"',
-            }}
-          >
-            Catch Me If You Can!
-          </Typography>
-          <Spy_Agent_Cards />
+          <Header header={'Catch Me If You Can!'} />
+          <SpyAgentCards />
           <Box style={{ width: '50vh', margin: '0 auto' }}>
             <ChoosePlayerModal
               open={isChoosePlayerModal}
