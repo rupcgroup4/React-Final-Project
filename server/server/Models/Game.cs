@@ -42,6 +42,7 @@ namespace server.Models
 
         public List<Game> GetPlayerGames(string email)
         {
+            GamesServices gs = new GamesServices(); //?? why wasn't there
             return gs.GetPlayerGames(email);
         }
         public List<dynamic> GetGlobalLeaderboard()

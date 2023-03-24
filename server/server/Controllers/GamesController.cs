@@ -29,25 +29,7 @@ namespace server.Controllers
 
         }
 
-        [HttpPost]
-        [Route("api/games/player")]
-        public IHttpActionResult PlayerGame([FromBody] JObject playerEmail)
-        {   
-            try
-            {
-                string email = (string)playerEmail["email"];
-
-                Game game = new Game();
-                List<Game> playerGames = game.GetPlayerGames(email);
-
-                return Ok(playerGames);
-
-            } catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
-            }
-  
-        }
+        
         [HttpPost]
         [Route("api/games/leaderboard")]
         public IHttpActionResult Leaderboard([FromBody] dynamic leaderboard_type)

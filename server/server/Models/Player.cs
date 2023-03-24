@@ -8,42 +8,38 @@ namespace server.Models
 {
     public class Player
     {
-        string firstName;
-        string lastName;
         string email;
         string password;
+        string firstName;
+        string lastName;
+        
 
         public Player() { }
 
-        public Player(string firstName, string lastName, string email, string password)
+        public Player(string email, string password, string firstName, string lastName)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
             this.Email = email;
             this.Password = password;
+            this.FirstName = firstName;
+            this.LastName = lastName;
         }
 
-        public string FirstName { get => firstName; set => firstName = value; }
-        public string LastName { get => lastName; set => lastName = value; }
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
+        public string FirstName { get => firstName; set => firstName = value; }
+        public string LastName { get => lastName; set => lastName = value; }
 
-        public Player PlayerLogin(string email, string password)
+        public Player getPlayerByEmail(string email)
         {
             PlayerServices ps = new PlayerServices();
-            return ps.PlayerLogin(email, password);
+            return ps.getPlayerByEmail(email);
         }
 
-        public Player PlayerSingUp()
+        public Player PlayerSignUp()
         {
             PlayerServices ps = new PlayerServices();
             return ps.PlayerSignUp(this);
         }
 
-        public Player PlayerGoogleSignUp()
-        {
-            PlayerServices ps = new PlayerServices();
-            return ps.PlayerGoogleSignUp(this);
-        }
     }
 }

@@ -21,7 +21,7 @@ export const GoogleSignIn = (props) => {
         FirstName: userObject.given_name,
         LastName: userObject.family_name,
         Email: userObject.email,
-        Password: '',
+        Password: null,
       })
       .catch((e) => {
         alert(e);

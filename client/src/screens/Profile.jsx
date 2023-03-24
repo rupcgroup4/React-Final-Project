@@ -67,7 +67,7 @@ const Profile = () => {
   const getUserData = useCallback(async () => {
     const email = player1?.Email;
     const res = await axios
-      .post(`${API_URL}/games/player`, {
+      .post(`${API_URL}/players/getPlayerGames`, {
         email,
       })
       .catch((e) => {

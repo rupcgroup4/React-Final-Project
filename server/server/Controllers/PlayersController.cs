@@ -12,7 +12,7 @@ namespace server.Controllers
     public class PlayersController : ApiController
     {
         
-        //Player log in
+        //Player login
         public IHttpActionResult Post([FromBody] JObject emailAndPassword)
         {
             try
@@ -22,19 +22,27 @@ namespace server.Controllers
                 string email = (string)emailAndPassword["email"];
                 string password = (string)emailAndPassword["password"];
 
-                player = player.PlayerLogin(email, password);
+                player = player.getPlayerByEmail(email);
 
-                if (player == null)
+                if (player != null)   //player matching the inputed email found
                 {
-                    return Content(HttpStatusCode.NotFound, "User not exist");
+                    if(player.Password==null || player.Password=="")
+                    {
+                        return Content(HttpStatusCode.BadRequest, "Please sign in with Google");
+                    }
+                    if (player.Password == password)//password is correct
+                    {
+                        return Ok(player);
+                    }
+                    else //password isn't correct
+                    {
+                        return Content(HttpStatusCode.Unauthorized, "Password is incorrect");
+                    }
                 }
-
-                if (player.FirstName == null)
+                else //user matching the inputed email not found
                 {
-                    return Content(HttpStatusCode.Unauthorized, "Password not match");
+                    return Content(HttpStatusCode.NotFound, "Player matching the inputed email not found");
                 }
-
-                return Ok(player);
             } 
             catch (Exception ex)
             {
@@ -43,19 +51,23 @@ namespace server.Controllers
             
         }
 
-
         [HttpPost]
         [Route("api/players/googleSignUp")]
-        public IHttpActionResult GoogleSignUp([FromBody] Player player)
+        public IHttpActionResult googleLogin([FromBody] Player player)
         {
             try
             {
-                player = player.PlayerGoogleSignUp();
-                if (player == null)
+                Player p = player.getPlayerByEmail(player.Email);
+                if (p == null) //player isn't in DB - add player to DB
                 {
-                    return Content(HttpStatusCode.Unauthorized, "Email already exist");
+                    //insert player to DB
+                    player = player.PlayerSignUp();
+                    if (player == null)
+                    {
+                        return Content(HttpStatusCode.Unauthorized, "Email already exist");
+                    }
                 }
-                return Ok(player);
+                return Ok(player); //player login succesfully
             }
             catch (Exception ex)
             {
@@ -71,17 +83,39 @@ namespace server.Controllers
         {
             try
             {
-                player = player.PlayerSingUp();
+                player = player.PlayerSignUp();
                 if(player == null)
                 {
                     return Content(HttpStatusCode.Unauthorized, "Email already exist");
                 }
                 return Ok(player);
+
             } catch (Exception ex)
             {
                 return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
             
+        }
+
+        [HttpPost]
+        [Route("api/players/getPlayerGames")]
+        public IHttpActionResult getPlayerGame([FromBody] JObject playerEmail)
+        {
+            try
+            {
+                string email = (string)playerEmail["email"];
+
+                Game game = new Game();
+                List<Game> playerGames = game.GetPlayerGames(email);
+
+                return Ok(playerGames);
+
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
         }
 
 
