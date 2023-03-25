@@ -79,9 +79,13 @@ const Gameboard = () => {
   };
 
   const saveGameStats = useCallback(async () => {
-    const spyEmail = 'Email' in player1 ? player1?.Email : null;
-    const agentsEmail = 'Email' in player2 ? player2.Email : null;
+   // const spyEmail = 'Email' in player1 ? player1?.Email : null;
+    //const agentsEmail = 'Email' in player2 ? player2.Email : null;
 
+    const spyEmail = player1.role=='spy' ? player1?.Email :  player2?.Email;
+    const agentsEmail = player1.role=='agents' ? player1?.Email : player2?.Email;
+
+    
     // if (spyEmail === null && agentsEmail === null) { 
     //   return;
     // }

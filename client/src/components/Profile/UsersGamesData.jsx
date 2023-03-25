@@ -69,7 +69,7 @@ export default function BasicTable({ gameData }) {
               </TableCell>
               <TableCell align='center'>{row.date}</TableCell>
               <TableCell align='center'>
-                {row.playAs ? 'Spy' : 'Agents'}
+                {row.playAs ? 'Agents' : 'Spy'}
               </TableCell>
               <TableCell align='center'>{row.opponent}</TableCell>
               <TableCell align='center'>{row.win ? 'Yes' : 'No'}</TableCell>
