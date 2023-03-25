@@ -38,6 +38,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "http://194.90.158.74/cgroup4/prod/finalproj/build",
   "eslintConfig": {
     "extends": [
       "react-app",

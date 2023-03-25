@@ -1,12 +1,14 @@
 import React from 'react';
 import '../../CSS/cardStyle.css';
+import spyImg from '../../img/Spy.png';
+import agentsImg from '../../img/Agents.png';
 export const SpyAgentCards = () => {
   return (
     <div>
       <div className='container'>
         <div className='card'>
           <div className='image'>
-            <img src='/Spy.png' alt=''></img>
+            <img src={spyImg} alt=''></img>
           </div>
           <div className='content'>
             <h3>Spy</h3>
@@ -18,7 +20,7 @@ export const SpyAgentCards = () => {
         </div>
         <div className='card'>
           <div className='image'>
-            <img src='/Agents.png' alt=''></img>
+            <img src={agentsImg} alt=''></img>
           </div>
           <div className='content'>
             <h3>Agents</h3>
