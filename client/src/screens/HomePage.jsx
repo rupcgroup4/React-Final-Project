@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Box, Grid, Typography, Card, CardContent } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Grid, Card, CardContent } from '@mui/material';
 import ChoosePlayerModal from '../components/HomePage/ChoosePlayerModal';
 import MapAnimation from '../components/HomePage/MapAnimation';
 import Player2LoginModal from '../components/HomePage/Player2LogInModal';
@@ -29,7 +29,7 @@ const HomePage = () => {
   };
 
   return (
-    <Box mx={5}>
+    <Box mx={{ xs: 2, md: 5 }}>
       <Grid
         container
         spacing={1}
@@ -38,7 +38,7 @@ const HomePage = () => {
         justifyContent={'center'}
         mt={2}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -49,10 +49,10 @@ const HomePage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Header header={'Catch Me If You Can!'} />
           <SpyAgentCards />
-          <Box style={{ width: '50vh', margin: '0 auto' }}>
+          <Box style={{ width: { xs: '40vh', md: '50vh' }, margin: '0 auto' }}>
             <ChoosePlayerModal
               open={isChoosePlayerModal}
               setOpen={setIsChoosePlayerModal}

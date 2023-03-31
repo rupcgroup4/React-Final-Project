@@ -1,5 +1,4 @@
-import { useContext, useEffect, useCallback, useState } from 'react';
-import { PlayersContext } from '../context/PlayersContextProvider';
+import { useEffect, useCallback, useState } from 'react';
 import UsersGamesData from '../components/Profile/UsersGamesData';
 import UsesTotalGameStats from '../components/Profile/UsersTotalGameStats';
 import { Box, Typography } from '@mui/material';
@@ -7,62 +6,10 @@ import usePlayersStore from '../store/playerStore';
 import axios from 'axios';
 import { API_URL } from '../utils/constants';
 
-//temp game data hardcoded
-const gameData = [
-  {
-    gameId: 1,
-    date: '1.1.23',
-    playAs: 0, //0=spy, 1=agents
-    opponent: 'stav',
-    win: 1,
-    totalSteps: 12,
-  },
-  {
-    gameId: 2,
-    date: '1.1.23',
-    playAs: 0, //0=spy, 1=agents
-    opponent: 'Moshe',
-    win: 1,
-    totalSteps: 10,
-  },
-  {
-    gameId: 3,
-    date: '1.1.23',
-    playAs: 1, //0=spy, 1=agents
-    opponent: 'Yoav',
-    win: 0,
-    totalSteps: 7,
-  },
-  {
-    gameId: 4,
-    date: '1.1.23',
-    playAs: 0, //0=spy, 1=agents
-    opponent: 'Maya',
-    win: 1,
-    totalSteps: 4,
-  },
-  {
-    gameId: 5,
-    date: '1.1.23',
-    playAs: 1, //0=spy, 1=agents
-    opponent: 'Shira',
-    win: 0,
-    totalSteps: 14,
-  },
-];
-
-//temp
-const usersGameStats = {
-  gamesPlayed: 2,
-  gamesWon: 1,
-  winPersentage: 50,
-};
-
 const Profile = () => {
   const { player1 } = usePlayersStore();
   const [gameData, setGameData] = useState(null);
   const [wins, setWins] = useState(0);
-  console.log('player1= ', player1);
 
   const getUserData = useCallback(async () => {
     const email = player1?.Email;
@@ -73,7 +20,6 @@ const Profile = () => {
       .catch((e) => {
         alert(e);
       });
-    console.log(res);
 
     const gameData = res.data.map((row) => {
       const gameId = row.Id;
@@ -102,7 +48,6 @@ const Profile = () => {
     getUserData();
   }, [getUserData]);
 
-  console.log(gameData?.length);
   return (
     <Box>
       <Typography

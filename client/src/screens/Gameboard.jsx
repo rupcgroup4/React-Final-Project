@@ -1,12 +1,10 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { PlayersContext } from '../context/PlayersContextProvider';
+import React, { useState, useEffect, useCallback } from 'react';
 import GameMap from '../components/Gameboard/GameMap';
 import Flights from '../components/Gameboard/Flights';
 import { graph } from '../file';
 import Map from '../classes/Map';
 import axios from 'axios';
-import { Box, Divider, Grid } from '@mui/material';
-import GameOverModalComponent from '../components/Gameboard/GameOverModal';
+import { Box, Grid } from '@mui/material';
 import GameDescribe from '../components/Gameboard/GameDescribe';
 import ToggleAgents from '../components/Gameboard/ToggleAgents';
 import usePlayersStore from '../store/playerStore';
@@ -79,14 +77,14 @@ const Gameboard = () => {
   };
 
   const saveGameStats = useCallback(async () => {
-   // const spyEmail = 'Email' in player1 ? player1?.Email : null;
+    // const spyEmail = 'Email' in player1 ? player1?.Email : null;
     //const agentsEmail = 'Email' in player2 ? player2.Email : null;
 
-    const spyEmail = player1.role=='spy' ? player1?.Email :  player2?.Email;
-    const agentsEmail = player1.role=='agents' ? player1?.Email : player2?.Email;
+    const spyEmail = player1.role === 'spy' ? player1?.Email : player2?.Email;
+    const agentsEmail =
+      player1.role === 'agents' ? player1?.Email : player2?.Email;
 
-    
-    // if (spyEmail === null && agentsEmail === null) { 
+    // if (spyEmail === null && agentsEmail === null) {
     //   return;
     // }
 
@@ -152,12 +150,11 @@ const Gameboard = () => {
     (winRole) => {
       const isPlayer1Win = player1.role === winRole;
       const winnerEmail = isPlayer1Win ? player1?.Email : player2?.Email;
-      if (winnerEmail) { 
+      if (winnerEmail) {
         setWinner(winnerEmail);
         setRoleWin(winRole);
-      }
-      else { 
-        setWinner("Guest");
+      } else {
+        setWinner('Guest');
         setRoleWin(winRole);
       }
     },
@@ -165,14 +162,11 @@ const Gameboard = () => {
   );
 
   const checkWin = useCallback(async () => {
-
-    
     const isSpyWin = spy?.id === targetPosition;
     const isAgentsWin = agents.some((agent) => agent?.id === spy?.id);
 
-    console.log(isSpyWin,"Spy");
-    console.log(isAgentsWin,"Agent");
-
+    console.log(isSpyWin, 'Spy');
+    console.log(isAgentsWin, 'Agent');
 
     if (isAgentsWin) {
       await sleep(1000);
@@ -218,14 +212,12 @@ const Gameboard = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box></Box>
-
       <Grid container spacing={0.5}>
         <Grid item xs={12} display={'flex'} justifyContent={'center'}>
           <GameDescribe resetGame={resetGame} steps={steps} turn={turn} />
         </Grid>
 
-        <Grid item md={3}>
+        <Grid item xs={12} md={3}>
           <Flights
             state={spy}
             isSpy={true}
@@ -235,7 +227,7 @@ const Gameboard = () => {
             agentMove={agentMove}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item xs={12} md={6}>
           <Box
             sx={{
               border: 1,
@@ -248,7 +240,7 @@ const Gameboard = () => {
           </Box>
           <GameAlert message={gameDescribeMessage} />
         </Grid>
-        <Grid item md={3}>
+        <Grid item xs={12} md={3}>
           <ToggleAgents isAgent1Show={isAgent1Show} changeAgent={changeAgent} />
           {isAgent1Show ? (
             <Flights

@@ -19,7 +19,7 @@ const GameDescribe = ({ resetGame, steps, turn }) => {
         borderRadius: '16px',
       }}
       m={2}
-      display={'flex'}
+      display={{ xs: 'block', md: 'flex' }}
       alignItems={'center'}
       justifyContent={'space-between'}
     >
@@ -45,7 +45,7 @@ const GameDescribe = ({ resetGame, steps, turn }) => {
           </ListItem>
         </Box>
       </Box>
-      <Box mx={5}>
+      <Box mx={5} textAlign={'center'} mb={{ xs: 2, md: 0 }}>
         <Button variant='contained' size='large' onClick={resetGame}>
           Reset Game
         </Button>

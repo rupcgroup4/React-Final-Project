@@ -2,10 +2,11 @@ import React from 'react';
 import '../../CSS/cardStyle.css';
 import spyImg from '../../img/Spy.png';
 import agentsImg from '../../img/Agents.png';
+import { Box } from '@mui/material';
 export const SpyAgentCards = () => {
   return (
     <div>
-      <div className='container'>
+      <Box className='container' sx={{ display: { xs: 'block', md: 'flex' } }}>
         <div className='card'>
           <div className='image'>
             <img src={spyImg} alt=''></img>
@@ -30,7 +31,7 @@ export const SpyAgentCards = () => {
             </p>
           </div>
         </div>
-      </div>
+      </Box>
     </div>
   );
 };

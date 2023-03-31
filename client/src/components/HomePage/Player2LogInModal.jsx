@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { PlayersContext } from '../../context/PlayersContextProvider';
 import axios from 'axios';
 import usePlayersStore from '../../store/playerStore';
 import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
@@ -23,10 +22,6 @@ const Player2LogInModal = ({ open, setOpen }) => {
   const { player2Login } = usePlayersStore();
 
   const navigate = useNavigate();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);

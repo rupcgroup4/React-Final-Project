@@ -7,7 +7,14 @@ import GamePlay from '../components/GameRules/GamePlay';
 
 const GameRules = () => {
   return (
-    <Box m={'auto'} mt={3} border={1} borderRadius={15} width={'60%'} p={5}>
+    <Box
+      m={'auto'}
+      mt={3}
+      border={1}
+      borderRadius={15}
+      width={{ xs: '90%', md: '60%' }}
+      p={5}
+    >
       <Box display={'flex'} justifyContent={'space-between'}>
         <IconsLine />
         <Box width={'80%'}>

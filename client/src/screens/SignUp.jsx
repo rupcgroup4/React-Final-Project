@@ -1,5 +1,9 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import usePlayersStore from '../store/playerStore';
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../utils/constants';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Container,
   Avatar,
@@ -9,10 +13,6 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
-import usePlayersStore from '../store/playerStore';
-import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../utils/constants';
 
 const SignUp = () => {
   const navigate = useNavigate();

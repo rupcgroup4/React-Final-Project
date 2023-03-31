@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import { PlayersContext } from '../../context/PlayersContextProvider';
 import { useNavigate } from 'react-router-dom';
 import usePlayersStore from '../../store/playerStore';
 import axios from 'axios';
@@ -29,7 +27,6 @@ export const GoogleSignIn = (props) => {
       });
 
     const user = results.data;
-    console.log(user);
     if (props.position === 1) {
       player1Login(user);
       navigate('/');
@@ -47,6 +44,7 @@ export const GoogleSignIn = (props) => {
   const onError = (res) => {
     console.log(res);
   };
+
   return (
     <div style={{ marginTop: '1rem' }}>
       <GoogleLogin onSuccess={onSuccess} onError={onError} width='500' />

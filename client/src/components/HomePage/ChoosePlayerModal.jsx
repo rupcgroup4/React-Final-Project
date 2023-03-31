@@ -1,7 +1,5 @@
-import { forwardRef, useContext } from 'react';
+import { forwardRef } from 'react';
 import PlayerCard from './PlayerCard';
-import { PlayersContext } from '../../context/PlayersContextProvider';
-import SendIcon from '@mui/icons-material/Send';
 import FlightIcon from '@mui/icons-material/Flight';
 import CloseIcon from '@mui/icons-material/Close';
 import {

@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { googleLogout } from '@react-oauth/google';
 import { Avatar } from '@mui/material';
-import { PlayersContext } from '../../context/PlayersContextProvider';
 import usePlayersStore from '../../store/playerStore';
 import { AvatarGenerator } from 'random-avatar-generator';
 
@@ -9,7 +8,7 @@ export const GoogleLogout = () => {
   const { player1 } = usePlayersStore();
 
   const generator = new AvatarGenerator();
-  const [avatar, setAvatar] = useState(generator.generateRandomAvatar());
+  const avatar = generator.generateRandomAvatar();
 
   useEffect(() => {
     if (player1 === null) {

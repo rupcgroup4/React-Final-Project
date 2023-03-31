@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import DarkModeComponent from './DarkModeComponent';
+import GoogleLogout from '../Google-SignIn/GoogleLogout';
+import usePlayersStore from '../../store/playerStore';
+import MenuIcon from '@mui/icons-material/Menu';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {
   AppBar,
   Box,
@@ -7,21 +13,10 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
   Tooltip,
   MenuItem,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import { Link, useLocation } from 'react-router-dom';
-import DarkModeComponent from './DarkModeComponent';
-import GoogleSignIn from '../Google-SignIn/GoogleSignIn';
-import GoogleLogout from '../Google-SignIn/GoogleLogout';
-import { PlayersContext } from '../../context/PlayersContextProvider';
-import { useNavigate } from 'react-router-dom';
-import usePlayersStore from '../../store/playerStore';
 
 const pages = [
   { name: 'Home', route: '/' },
@@ -34,11 +29,11 @@ const settings = [
 ];
 
 function NavBar(props) {
-  const { player1, player1Logout, player2, player2Logout } = usePlayersStore();
+  const { player1, player1Logout } = usePlayersStore();
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const location = useLocation();
 
@@ -105,9 +100,9 @@ function NavBar(props) {
             Catch Me!
           </Typography>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ mr: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size='large'
+              size='medium'
               aria-label='account of current user'
               aria-controls='menu-appbar'
               aria-haspopup='true'
@@ -136,30 +131,39 @@ function NavBar(props) {
             >
               {pages.map((page) => (
                 <MenuItem key={page.route} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page.name}</Typography>
+                  <Typography textAlign='center'>
+                    <Link
+                      to={page.route}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                      key={page.route}
+                    >
+                      {page.name}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <FlightTakeoffIcon
+            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+          />
           <Typography
-            variant='h5'
+            variant='h6'
             noWrap
             component='a'
-            href=''
+            href='/'
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: '"Caveat", "cursive"',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
-          </Typography> */}
+            Catch Me!
+          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link
@@ -200,7 +204,7 @@ function NavBar(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) =>
-                setting.name == 'Profile' && player1 ? (
+                setting.name === 'Profile' && player1 ? (
                   <Link
                     to={setting.route}
                     key={setting.route}
